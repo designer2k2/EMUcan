@@ -3,7 +3,7 @@ ECUMaster EMU CAN Stream Reader Library
 
 It reads the EMU CAN Stream and decodes it into something usefull.
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![arduino-library-badge](https://www.ardu-badge.com/badge/MyLibrary.svg?)](https://github.com/designer2k2/EMUcan)
 
 ## Setup
 
