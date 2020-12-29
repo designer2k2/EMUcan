@@ -1,0 +1,13 @@
+# -----------------------------------------
+# Syntax colouring for EMUcan library
+# -----------------------------------------
+
+# Datatypes (such as objects)
+EMUcan	KEYWORD1
+
+#Methods / functions
+begin 	KEYWORD2
+checkEMUcan	KEYWORD2
+sendFrame KEYWORD2
+
+# Constants
