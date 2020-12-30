@@ -12,7 +12,8 @@
 
 #include <EMUcan.h>
 
-EMUcan emucan;
+//Define the EMU Can Base at 600, and the CS Pin from the MCP215 at 10):
+EMUcan emucan(600, 10);
 
 unsigned long previousMillis = 0;
 const long interval = 1000;

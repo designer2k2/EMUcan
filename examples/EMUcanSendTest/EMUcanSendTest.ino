@@ -17,6 +17,8 @@
 
 EMUcan emucan;
 
+struct can_frame canMsg1;
+
 unsigned long previousMillis = 0;
 const long interval = 100;
 
@@ -29,10 +31,10 @@ void setup() {
   emucan.begin(CAN_500KBPS, MCP_8MHZ);
 
   // Frame to be send:
-  emucan.send_frame.can_id  = 0x0F6;
-  emucan.send_frame.can_dlc = 2;
-  emucan.send_frame.data[0] = 0xFF;
-  emucan.send_frame.data[1] = 0x00;
+  canMsg1.can_id  = 0x0F6;
+  canMsg1.can_dlc = 2;
+  canMsg1.data[0] = 0xFF;
+  canMsg1.data[1] = 0x00;
 
   Serial.println("------- CAN Send ----------");
 
@@ -48,10 +50,14 @@ void loop() {
     previousMillis = currentMillis;
 
     countUp++;  //Byte, so overflow at 255
-    emucan.send_frame.data[0] = 255 - countUp;
-    emucan.send_frame.data[1] = countUp;
+    canMsg1.data[0] = 255 - countUp;
+    canMsg1.data[1] = countUp;
 
     //Sends the frame;
-    emucan.sendFrame();
+    emucan.sendFrame(&canMsg1);
+
+    Serial.print("Message sent: ");
+    Serial.println(countUp);
+
   }
 }

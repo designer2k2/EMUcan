@@ -21,12 +21,12 @@
 #include "EMUcan.h"
 #include <mcp2515.h>
 
-MCP2515 mcp2515(10);
 struct can_frame canMsg;
 
-EMUcan::EMUcan(uint32_t EMUbase) {
+EMUcan::EMUcan(uint32_t EMUbase, uint8_t cs) {
   //Getting the base number, as set in the EMU Software
   _EMUbase = EMUbase;
+  _cs = cs;
 }
 
 void EMUcan::begin(const CAN_SPEED canSpeed) {
@@ -34,13 +34,14 @@ void EMUcan::begin(const CAN_SPEED canSpeed) {
 }
 
 void EMUcan::begin(const CAN_SPEED canSpeed, CAN_CLOCK canClock) {
-  mcp2515.reset();
-  mcp2515.setBitrate(canSpeed, canClock);
-  mcp2515.setNormalMode();
+  mcp2515 = new MCP2515(_cs);
+  mcp2515->reset();
+  mcp2515->setBitrate(canSpeed, canClock);
+  mcp2515->setNormalMode();
 }
 
 bool EMUcan::checkEMUcan() {
-  if (mcp2515.readMessage(&canMsg) == MCP2515::ERROR_OK) {
+  if (mcp2515->readMessage(&canMsg) == MCP2515::ERROR_OK) {
     //Check if Message is within Range of 0-7 from base:
     if ( canMsg.can_id >= _EMUbase && canMsg.can_id <= _EMUbase + 7) {
       //So messages here should be decoded!
@@ -72,8 +73,10 @@ void EMUcan::emucanstatusEngine(const EMU_STATUS_UPDATES action) {
   }
 }
 
-bool EMUcan::sendFrame() {
-  mcp2515.sendMessage(&send_frame);
+bool EMUcan::sendFrame(const struct can_frame *frame) {
+  if (mcp2515->sendMessage(frame) != MCP2515::ERROR_OK) {
+    return false;
+  }
   return true;
 }
 
@@ -163,6 +166,10 @@ bool EMUcan::decodeEmuFrame(struct can_frame *msg) {
     emu_data.pwm1 = msg->data[2];
   }
   return true;
+}
+
+MCP2515 *EMUcan::getMcp2515() {
+  return mcp2515;
 }
 
 bool EMUcan::decodeCel() {

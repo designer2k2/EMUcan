@@ -85,17 +85,16 @@ class EMUcan {
 
   public:
     // Constructor
-    EMUcan(uint32_t  EMUbase = 0x600);
+    EMUcan(uint32_t  EMUbase = 0x600, uint8_t cs = 10);
 
     // Methods
     void begin(const CAN_SPEED canSpeed);
     void begin(const CAN_SPEED canSpeed, const CAN_CLOCK canClock);
     bool checkEMUcan();
-    bool sendFrame();
+    bool sendFrame(const struct can_frame *);
 
     // Data
     struct emu_data_t emu_data;
-    struct can_frame send_frame;
 
     enum ERRORFLAG : uint16_t {
       ERR_CLT = (1 << 0),
@@ -176,6 +175,8 @@ class EMUcan {
 
     bool decodeCel();
     enum EMUcan_STATUS EMUcan_Status = EMUcan_FRESH;
+    MCP2515 *getMcp2515();
+
     // Privates
   private:
 
@@ -183,7 +184,8 @@ class EMUcan {
       EMU_MESSAGE_RECEIVED_VALID,
       EMU_RECEIVED_NOTHING
     };
-
+    uint8_t _cs;
+    MCP2515 *mcp2515;
     bool decodeEmuFrame(struct can_frame *msg);
     void emucanstatusEngine(const EMU_STATUS_UPDATES action);
     uint32_t _EMUbase;
