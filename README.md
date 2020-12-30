@@ -1,5 +1,5 @@
 # EMUcan
-ECUMaster EMU CAN Stream Reader Library
+ECUMaster EMU CAN Stream Reader Arduino Library
 
 It reads the EMU CAN Stream and decodes it into something usefull.
 
