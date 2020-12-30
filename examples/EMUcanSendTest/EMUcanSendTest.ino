@@ -1,7 +1,6 @@
 // EMUCan Lib Simple Send Example
 
 // Example to be run on Arduino Nano with MCP2515
-// Library hardcodes the 8MHZ Version
 // Configure the EMU Black to send the CAN Stream at 500KBPS
 
 // Configure custom CAN messages in the EMU Black:
@@ -27,7 +26,7 @@ void setup() {
   Serial.begin(115200);
 
   //Call this in the setup to init the lib:
-  emucan.begin();
+  emucan.begin(CAN_500KBPS, MCP_8MHZ);
 
   // Frame to be send:
   emucan.send_frame.can_id  = 0x0F6;
@@ -54,7 +53,5 @@ void loop() {
 
     //Sends the frame;
     emucan.sendFrame();
-    
-    Serial.println(emucan.emu_data.pulseWidth);
   }
 }

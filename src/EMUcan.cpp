@@ -7,16 +7,18 @@
 MCP2515 mcp2515(10);
 struct can_frame canMsg;
 
-EMUcan::EMUcan(uint32_t EMUbase, byte cantype){
+EMUcan::EMUcan(uint32_t EMUbase){
   //Getting the base number, as set in the EMU Software
   _EMUbase = EMUbase;
-  _cantype = cantype;
 }
 
-void EMUcan::begin(){
+void EMUcan::begin(const CAN_SPEED canSpeed){
+  begin(canSpeed, MCP_16MHZ);
+}
+
+void EMUcan::begin(const CAN_SPEED canSpeed, CAN_CLOCK canClock){
   mcp2515.reset();
-  //Change the CAN Speed or MCP Clock here if needed:
-  mcp2515.setBitrate(CAN_500KBPS, MCP_8MHZ);
+  mcp2515.setBitrate(canSpeed, canClock);
   mcp2515.setNormalMode();
 }
 
@@ -26,9 +28,31 @@ bool EMUcan::checkEMUcan(){
     if ( canMsg.can_id >= _EMUbase && canMsg.can_id <= _EMUbase + 7){
       //So messages here should be decoded!
       decodeEmuFrame(&canMsg);
-    }    
+      //Store the event:
+      emucanstatusEngine(EMU_MESSAGE_RECEIVED_VALID);
+    } 
+  } else{
+    emucanstatusEngine(EMU_RECEIVED_NOTHING);
   }
   return true;
+}
+
+void EMUcan::emucanstatusEngine(const EMU_STATUS_UPDATES action){
+  //check the current time versus the last to define the status.
+  unsigned long currentMillis = millis();
+  switch(action){
+    case EMU_RECEIVED_NOTHING:
+      if (currentMillis - _previousMillis >= 1000) {
+        EMUcan_Status = EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND;
+      }
+      break;
+    case EMU_MESSAGE_RECEIVED_VALID:
+      _previousMillis = currentMillis;
+      EMUcan_Status = EMUcan_RECEIVED_WITHIN_LAST_SECOND;
+      break;
+    default:
+      break;
+  }
 }
 
 bool EMUcan::sendFrame(){
@@ -103,9 +127,6 @@ bool EMUcan::decodeEmuFrame(struct can_frame *msg){
     emu_data.flags1 = msg->data[6];
     //7 ETHANOL %
     emu_data.flexFuelEthanolContent = msg->data[7];
-    
-    //Decode the Errflag:
-    decodeCel();
   }
   //Base +6:
   if (msg->can_id == _EMUbase + 6){
@@ -128,17 +149,10 @@ bool EMUcan::decodeEmuFrame(struct can_frame *msg){
 }
 
 bool EMUcan::decodeCel(){
-  //the first 10 bits represent different errors
-  //0 ERR_CLT
-  //1 ERR_IAT
-  //2 ERR_MAP
-  //3 ERR_WBO
-  //4 ERR_EGT1
-  //5 ERR_EGT2
-  //6 EGT_ALARM
-  //7 KNOCKING
-  //8 FFSENSOR
-  //9 ERR_DBW
-  //10 ERR_FPR
-  return true;
+  //Returns true if an CEL error is on:
+  if ( emu_data.cel & EFLG_ERRORMASK ) {
+      return true;
+  } else {
+      return false;
+  }
 }

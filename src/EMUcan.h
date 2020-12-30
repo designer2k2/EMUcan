@@ -58,14 +58,21 @@ struct emu_data_t {
   uint16_t boostTarget; //kPa
 };
 
+enum EMUcan_STATUS{
+  EMUcan_FRESH,
+  EMUcan_RECEIVED_WITHIN_LAST_SECOND,
+  EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND,
+};
+
 class EMUcan {
 
   public:
     // Constructor
-    EMUcan(uint32_t  EMUbase=0x600, byte cantype=1);
+    EMUcan(uint32_t  EMUbase=0x600);
     
     // Methods
-    void begin();
+    void begin(const CAN_SPEED canSpeed);
+    void begin(const CAN_SPEED canSpeed, const CAN_CLOCK canClock);
     bool checkEMUcan();
     bool sendFrame();
 
@@ -73,11 +80,43 @@ class EMUcan {
     struct emu_data_t emu_data;
     struct can_frame send_frame;
 
-    // Privates
-  private:
-    bool decodeEmuFrame(struct can_frame *msg);
+    enum ERRORFLAG : uint16_t {
+      ERR_CLT = (1<<0),
+      ERR_IAT = (1<<1),
+      ERR_MAP = (1<<2),
+      ERR_WBO = (1<<3),
+      ERR_EGT1 = (1<4),
+      ERR_EGT2 = (1<<5),
+      EGT_ALARM = (1<<6),
+      KNOCKING = (1<<7),
+      FFSENSOR = (1<<8),
+      ERR_DBW = (1<<9),
+      ERR_FPR = (1<<10)  
+    };
+    
+     static const uint16_t EFLG_ERRORMASK = ERR_CLT
+                                        | ERR_IAT
+                                        | ERR_MAP
+                                        | ERR_WBO
+                                        | ERR_EGT1
+                                        | ERR_EGT2
+                                        | EGT_ALARM
+                                        | KNOCKING;
+
     bool decodeCel();
+    enum EMUcan_STATUS EMUcan_Status = EMUcan_FRESH;
+    // Privates
+  private:    
+
+    enum EMU_STATUS_UPDATES {
+      EMU_MESSAGE_RECEIVED_VALID,
+      EMU_RECEIVED_NOTHING
+    };
+  
+    bool decodeEmuFrame(struct can_frame *msg);
+    void emucanstatusEngine(const EMU_STATUS_UPDATES action);
     uint32_t _EMUbase;
-    byte _cantype;
+    unsigned long _previousMillis = 0;
+
 };
 #endif

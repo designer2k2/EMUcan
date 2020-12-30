@@ -1,7 +1,6 @@
 // EMUCan Lib Simple Test Example
 
 // Example to be run on Arduino Nano with MCP2515
-// Library hardcodes the 8MHZ Version
 // Configure the EMU Black to send the CAN Stream at 500KBPS
 
 // This MCP2515 Lib is used: 
@@ -22,7 +21,7 @@ void setup() {
   Serial.begin(115200);
 
   //Call this in the setup to init the lib:
-  emucan.begin();
+  emucan.begin(CAN_500KBPS, MCP_8MHZ);
   
   Serial.println("------- CAN Read ----------");
 
@@ -36,14 +35,19 @@ void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
-    Serial.print(emucan.emu_data.RPM);
-    Serial.print(";");
-    Serial.print(emucan.emu_data.TPS);
-    Serial.print(";");
-    Serial.print(emucan.emu_data.IAT);
-    Serial.print(";");
-    Serial.print(emucan.emu_data.MAP);
-    Serial.print(";");
-    Serial.println(emucan.emu_data.pulseWidth);
+  	if (emucan.EMUcan_Status == EMUcan_RECEIVED_WITHIN_LAST_SECOND){
+  		Serial.print(emucan.emu_data.RPM);
+  		Serial.print(";");
+  		Serial.print(emucan.emu_data.TPS);
+  		Serial.print(";");
+  		Serial.print(emucan.emu_data.IAT);
+  		Serial.print(";");
+  		Serial.print(emucan.emu_data.MAP);
+  		Serial.print(";");
+  		Serial.println(emucan.emu_data.pulseWidth);
+  		emucan.sendFrame();
+  	} else {
+  		Serial.println("No communication from EMU");
+  	}
   }
 }
