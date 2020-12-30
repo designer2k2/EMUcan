@@ -7,7 +7,7 @@
 // Use this file: EMUBlackCANStreamExample.canstr
 // It will receive the values as CAN Analog 1 and 2.
 
-// This MCP2515 Lib is used: 
+// This MCP2515 Lib is used:
 // https://github.com/autowp/arduino-mcp2515
 
 // https://www.designer2k2.at
@@ -33,7 +33,7 @@ void setup() {
   emucan.send_frame.can_dlc = 2;
   emucan.send_frame.data[0] = 0xFF;
   emucan.send_frame.data[1] = 0x00;
-  
+
   Serial.println("------- CAN Send ----------");
 
 }
@@ -48,7 +48,7 @@ void loop() {
     previousMillis = currentMillis;
 
     countUp++;  //Byte, so overflow at 255
-    emucan.send_frame.data[0] = 255-countUp;
+    emucan.send_frame.data[0] = 255 - countUp;
     emucan.send_frame.data[1] = countUp;
 
     //Sends the frame;

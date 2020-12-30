@@ -1,4 +1,4 @@
-// EMUCan Lib Simple Test Example
+// EMUCan Lib Advanced Test Example
 
 // Example to be run on Arduino Nano with MCP2515
 // Configure the EMU Black to send the CAN Stream at 500KBPS
@@ -15,7 +15,7 @@
 EMUcan emucan;
 
 unsigned long previousMillis = 0;
-const long interval = 500;
+const long interval = 1000;
 
 void setup() {
   Serial.begin(115200);
@@ -36,17 +36,14 @@ void loop() {
   if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
     if (emucan.EMUcan_Status == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
-      Serial.print(emucan.emu_data.RPM);
-      Serial.print(";");
-      Serial.print(emucan.emu_data.TPS);
-      Serial.print(";");
-      Serial.print(emucan.emu_data.IAT);
-      Serial.print(";");
-      Serial.print(emucan.emu_data.MAP);
-      Serial.print(";");
-      Serial.println(emucan.emu_data.pulseWidth);
+      Serial.println(emucan.emu_data.RPM);
+      // Check the FLAGS1 if the Engine is Idle:
+      if (emucan.emu_data.flags1 & emucan.F_IDLE) {
+        Serial.println("Engine Idle active");
+      }
     } else {
       Serial.println("No communication from EMU");
     }
+
   }
 }
