@@ -49,6 +49,9 @@ bool EMUcan::checkEMUcan() {
       //Store the event:
       emucanstatusEngine(EMU_MESSAGE_RECEIVED_VALID);
     }
+    if (_returnexists == true) {
+      _returnfunction(&canMsg);
+    }
   } else {
     emucanstatusEngine(EMU_RECEIVED_NOTHING);
   }
@@ -179,4 +182,13 @@ bool EMUcan::decodeCel() {
   } else {
     return false;
   }
+}
+
+void EMUcan::ReturnAllFrames (ReturnAllFramesFunction response) {
+  _returnfunction = response;
+  _returnexists = true;
+}
+
+void EMUcan::ReturnAllFramesStop() {
+  _returnexists = false;
 }

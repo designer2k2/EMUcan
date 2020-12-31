@@ -81,6 +81,8 @@ enum EMUcan_STATUS {
   EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND,
 };
 
+typedef void (*ReturnAllFramesFunction) (const struct can_frame *);
+
 class EMUcan {
 
   public:
@@ -177,8 +179,14 @@ class EMUcan {
     enum EMUcan_STATUS EMUcan_Status = EMUcan_FRESH;
     MCP2515 *getMcp2515();
 
+    void ReturnAllFrames (ReturnAllFramesFunction response); 
+    void ReturnAllFramesStop();
+
     // Privates
   private:
+
+    bool _returnexists = false;
+    ReturnAllFramesFunction _returnfunction;
 
     enum EMU_STATUS_UPDATES {
       EMU_MESSAGE_RECEIVED_VALID,

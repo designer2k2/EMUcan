@@ -13,16 +13,21 @@
 #include <EMUcan.h>
 
 //Define the EMU Can Base at 600, and the CS Pin from the MCP215 at 10):
-EMUcan emucan(600, 10);
+EMUcan emucan(0x600, 10);
 
 unsigned long previousMillis = 0;
 const long interval = 1000;
 
 void setup() {
   Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
 
   //Call this in the setup to init the lib:
   emucan.begin(CAN_500KBPS, MCP_8MHZ);
+
+  //Setup the Callback to receive every CAN Message:
+  ReturnAllFramesFunction LetMeHaveIt = specialframefunction;
+  emucan.ReturnAllFrames(LetMeHaveIt);
 
   Serial.println("------- CAN Read ----------");
 
@@ -45,6 +50,25 @@ void loop() {
     } else {
       Serial.println("No communication from EMU");
     }
-
+    //Stop sending all frames after 1 second, this spams the serial
+    emucan.ReturnAllFramesStop();
   }
+}
+
+// self defined function to handle all frames:
+void specialframefunction(const struct can_frame *frame) {
+  //Magic things can happen here, but dont block!
+  Serial.print(frame->can_id, HEX); // print ID
+  Serial.print(" ");
+  Serial.print(frame->can_dlc, HEX); // print DLC
+  Serial.print(" ");
+
+  for (int i = 0; i < frame->can_dlc; i++)  { // print the data
+    Serial.print(frame->data[i], HEX);
+    Serial.print(" ");
+  }
+  Serial.println();
+
+  //Toggle the onboard LED for show:
+  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
 }
