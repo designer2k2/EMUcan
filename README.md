@@ -23,6 +23,10 @@ This Library is tested on Arduino Nano with a MCP2515 shield at 8Mhz.
 
 The EMU Black is running Software Version 2.127.
 
+## Other Versions
+
+For Teensy 4 use the EMUcanT4: https://github.com/designer2k2/EMUcanT4
+
 ## Support
 
 Please feel free to use/extend/report bugs/request features!
