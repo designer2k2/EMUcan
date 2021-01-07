@@ -7,11 +7,25 @@ It also can send data to the EMU!
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![arduino-library-badge](https://www.ardu-badge.com/badge/MyLibrary.svg?)](https://www.ardu-badge.com/EMUcan)
 
-## Setup
+## Installation
 
-Install the Library, and the following MCP2515 Library:
+The library is not listed in the Arduino Library manager yet, but you can download and install it manually.
+
+[Download](https://github.com/designer2k2/EMUcan/archive/main.zip) the zip file from our [repository](https://github.com/designer2k2/EMUcan/) and select in Arduino IDE `Sketch` → `Include library` → `Add .ZIP library...`.
+
+Or clone it into your `Documents/Arduino/libraries` folder:
+
+```sh
+git clone https://github.com/designer2k2/EMUcan.git
+```
+
+When installed you will also see a few examples in `File` → `Examples` → `EMUcan` menu.
+
+This library requires the following MCP2515 library:
 
 MCP2515 Library: https://github.com/autowp/arduino-mcp2515
+
+## Setup
 
 In the EMU Black, set the CAN-Bus speed to 500 Kpbs and enable "Send EMU stream over CAN-Bus"
 
