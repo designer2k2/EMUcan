@@ -241,6 +241,8 @@ The EMU Black was running Software Version 2.127.
 
 For Teensy 4 use the EMUcanT4: https://github.com/designer2k2/EMUcanT4
 
+For using the ECUMaster serial stream instead of the CAN Bus use this library: https://github.com/GTO2013/EMUSerial
+
 ## Support
 
 Please feel free to use/extend/report bugs/request features!
