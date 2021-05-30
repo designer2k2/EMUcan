@@ -9,7 +9,20 @@ It also can send data to the EMU!
 
 **Content:**
 
-(ToDo ToC)
+* [Installation](#installation)
+* [Setup](#setup)
+* [Hardware](#hardware)
+* [Software usage](#software-usage)
+   * [Initialization](#initialization)
+   * [Check on CAN Bus updates](#check-on-can-bus-updates)
+   * [Status](#status)
+   * [Reading the Values](#reading-the-values)
+   * [Reading Flags](#reading-flags)
+   * [Sending Data](#sending-data)
+   * [Custom Frame Receive](#custom-frame-receive)
+* [Others](#others)
+   * [Different Versions](#different-versions)
+   * [Support](#support)
 
 ## Installation
 
@@ -38,10 +51,6 @@ In the EMU Black, set the CAN-Bus speed to 500 Kpbs and enable "Send EMU stream 
 The EMU Stream base ID can be changed, the begin function takes this as parameter.
 
 CAN-Bus speed, and MCP2515 Clock speed can be set too, look in the examples.
-
-This Library is tested on Arduino Nano with a MCP2515 shield at 8Mhz.
-
-The EMU Black is running Software Version 2.127.
 
 ## Hardware
 
@@ -87,21 +96,146 @@ enum EMUcan_STATUS {
 
 ## Reading the Values
 
-(ToDo)
+Example on how to read a value:
+```C++
+Serial.println(emucan.emu_data.RPM);
+```
+
+All the values:
+
+see https://github.com/designer2k2/EMUcan/blob/main/src/EMUcan.h
+
+```C++
+// Available data
+struct emu_data_t {
+  uint16_t RPM;  //RPM
+  uint16_t MAP;  //kPa
+  uint8_t TPS;  //%
+  int8_t IAT;  //C
+  float Batt;  //V
+  float IgnAngle;  //deg
+  float pulseWidth;  //ms
+  float scondarypulseWidth;  //ms
+  uint16_t Egt1;  //C
+  uint16_t Egt2;  //C
+  float knockLevel;  //V
+  float dwellTime;  //ms
+  float wboAFR;  //AFR
+  int8_t gear;  //
+  uint8_t Baro;  //kPa
+  float analogIn1;  //V
+  float analogIn2;  //V
+  float analogIn3;  //V
+  float analogIn4;  //V
+  float analogIn5;  //V
+  float analogIn6;  //V
+  float injDC;  //%
+  int8_t emuTemp;  //C
+  float oilPressure;  //Bar
+  uint8_t oilTemperature;  //C
+  float fuelPressure;  //Bar
+  int16_t CLT;  //C
+  float flexFuelEthanolContent;  //%
+  int8_t ffTemp;  //C
+  float wboLambda;  //λ
+  uint16_t vssSpeed;  //km/h
+  uint16_t deltaFPR;  //kPa
+  uint8_t fuelLevel;  //%
+  uint8_t tablesSet;  //
+  float lambdaTarget;  //λ
+  float afrTarget;  //AFR
+  uint16_t cel;  //
+  float LambdaCorrection; //%
+  uint8_t flags1; //Flags 1
+  uint8_t outflags1; //Outflags 1
+  uint8_t outflags2; //Outflags 2
+  uint8_t outflags3; //Outflags 3
+  uint8_t outflags4; //Outflags 4
+  uint8_t pwm1; //%
+  uint16_t boostTarget; //kPa
+};
+```
 
 ## Reading Flags
 
-(ToDo)
+Example on how to check if the Engine is currently in idle:
+
+```C++
+if (emucan.emu_data.flags1 & emucan.F_IDLE) {
+  Serial.println("Engine Idle active");
+}
+```
 
 ## Sending Data
 
-(ToDo)
+This can be used to transmit data to the EMU Black, or any other Device on the CAN Bus.
+
+Example: https://github.com/designer2k2/EMUcan/blob/main/examples/EMUcanSendTest/EMUcanSendTest.ino
+
+Define a CAN Message:
+```C++
+struct can_frame canMsg1;
+```
+
+Fill the CAN Message with data:
+```C++
+canMsg1.can_id  = 0x0F6;
+canMsg1.can_dlc = 2;
+canMsg1.data[0] = 0xFF;
+canMsg1.data[1] = 0x00;
+```
+
+Send the CAN Message:
+```C++
+emucan.sendFrame(&canMsg1);
+```
+
+In the EMU Black Software use this to define the receive:
+https://github.com/designer2k2/EMUcan/blob/main/examples/EMUcanSendTest/EMUBlackCANStreamExample.canstr
+
 
 ## Custom Frame Receive
 
-(ToDo)
+Listening to more than just the EMU Black CAN Stream is possible. Every CAN frame can be used.
+
+The advanced example shows it: https://github.com/designer2k2/EMUcan/blob/main/examples/EMUcanAdvancedTest/EMUcanAdvancedTest.ino
+
+in Setup:
+```C++
+ReturnAllFramesFunction LetMeHaveIt = specialframefunction;
+emucan.ReturnAllFrames(LetMeHaveIt);
+```
+
+Stop the function:
+```C++
+emucan.ReturnAllFramesStop();
+```
+
+Example receive function:
+```C++
+void specialframefunction(const struct can_frame *frame) {
+  //Magic things can happen here, but dont block!
+  Serial.print(frame->can_id, HEX); // print ID
+  Serial.print(" ");
+  Serial.print(frame->can_dlc, HEX); // print DLC
+  Serial.print(" ");
+
+  for (int i = 0; i < frame->can_dlc; i++)  { // print the data
+    Serial.print(frame->data[i], HEX);
+    Serial.print(" ");
+  }
+  Serial.println();
+
+  //Toggle the onboard LED for show:
+  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+}
+```
 
 # Others
+
+This Library is tested on Arduino Nano with a MCP2515 shield at 8Mhz.
+
+The EMU Black was running Software Version 2.127.
 
 ## Different Versions
 
