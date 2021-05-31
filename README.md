@@ -166,6 +166,56 @@ if (emucan.emu_data.flags1 & emucan.F_IDLE) {
 }
 ```
 
+The flags1 would contain following states:
+```C++
+enum FLAGS1 : uint8_t {
+  F_GEARCUT = (1 << 0),
+  F_ALS = (1 << 1),
+  F_LC = (1 << 2),
+  F_IDLE = (1 << 3),
+  F_TABLE_SET = (1 << 4),
+  F_TC_INTERVENTION = (1 << 5),
+  F_PIT_LIMITER = (1 << 6),
+  F_BRAKE_SWITCH = (1 << 7)
+};
+```
+
+There are many more registers, take a look at https://github.com/designer2k2/EMUcan/blob/main/src/EMUcan.h 
+
+The information if the CEL is on can be checked by a dedicated function:
+
+```C++
+if (emucan.decodeCel()){
+  Serial.println("WARNING Engine CEL active");
+}
+```
+
+Details on why the CEL is on is contained in the cel flag:
+
+```C++
+enum ERRORFLAG : uint16_t {
+  ERR_CLT = (1 << 0),
+  ERR_IAT = (1 << 1),
+  ERR_MAP = (1 << 2),
+  ERR_WBO = (1 << 3),
+  ERR_EGT1 = (1 << 4),
+  ERR_EGT2 = (1 << 5),
+  EGT_ALARM = (1 << 6),
+  KNOCKING = (1 << 7),
+  FFSENSOR = (1 << 8),
+  ERR_DBW = (1 << 9),
+  ERR_FPR = (1 << 10)
+};
+```
+
+Example to check CEL against the ERR_CLT:
+
+```C++
+if (emucan.emu_data.cel & emucan.ERR_CLT) {
+  Serial.println("WARNING Engine CEL active due to CLT");
+}
+```
+
 ## Sending Data
 
 This can be used to transmit data to the EMU Black, or any other Device on the CAN Bus.
