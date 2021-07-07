@@ -42,6 +42,8 @@ void EMUcan::begin(const CAN_SPEED canSpeed, CAN_CLOCK canClock) {
 
 bool EMUcan::checkEMUcan() {
   if (mcp2515->readMessage(&canMsg) == MCP2515::ERROR_OK) {
+    //Clear RX1OVR Flag:
+    mcp2515->clearRXnOVR();
     //Check if Message is within Range of 0-7 from base:
     if ( canMsg.can_id >= _EMUbase && canMsg.can_id <= _EMUbase + 7) {
       //So messages here should be decoded!
@@ -191,4 +193,18 @@ void EMUcan::ReturnAllFrames (ReturnAllFramesFunction response) {
 
 void EMUcan::ReturnAllFramesStop() {
   _returnexists = false;
+}
+
+bool EMUcan::CanCheckError() {
+  return mcp2515->checkError();
+}
+
+uint8_t EMUcan::CanErrorCounter(bool RXorTX)
+{
+  if (RXorTX == false) {
+    return mcp2515->errorCountRX();
+  }
+  else {
+    return mcp2515->errorCountTX();
+  }
 }

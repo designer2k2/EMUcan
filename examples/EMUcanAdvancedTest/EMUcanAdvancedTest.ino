@@ -25,6 +25,9 @@ void setup() {
   //Call this in the setup to init the lib:
   emucan.begin(CAN_500KBPS, MCP_8MHZ);
 
+  Serial.print("EMUCAN_LIB_VERSION: ");
+  Serial.println(EMUCAN_LIB_VERSION);
+
   //Setup the Callback to receive every CAN Message:
   ReturnAllFramesFunction LetMeHaveIt = specialframefunction;
   emucan.ReturnAllFrames(LetMeHaveIt);
@@ -52,7 +55,21 @@ void loop() {
     }
     //Stop sending all frames after 1 second, this spams the serial
     emucan.ReturnAllFramesStop();
+
+    //Check RX/TX CAN error counts:
+    Serial.print("RX error count: ");
+    Serial.println(emucan.CanErrorCounter(false));
+    Serial.print("TX error count: ");
+    Serial.println(emucan.CanErrorCounter(true));
+
+    //retreive the mcp2515 object for direct access
+    MCP2515 mcp = *emucan.getMcp2515();
+    //call the getErrorFlags function from the mcp2515 lib:
+    uint8_t eflg = mcp.getErrorFlags();
+    Serial.print("eflg register:");
+    Serial.println(eflg);
   }
+
 }
 
 // self defined function to handle all frames:

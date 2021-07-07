@@ -26,6 +26,8 @@
 
 #include <mcp2515.h>
 
+#define EMUCAN_LIB_VERSION               (F("1.0.3"))
+
 // Available data
 struct emu_data_t {
   uint16_t RPM;  //RPM
@@ -94,7 +96,9 @@ class EMUcan {
     void begin(const CAN_SPEED canSpeed, const CAN_CLOCK canClock);
     bool checkEMUcan();
     bool sendFrame(const struct can_frame *);
-
+    bool CanCheckError();
+    uint8_t CanErrorCounter(bool RXorTX);
+	
     // Data
     struct emu_data_t emu_data;
 
