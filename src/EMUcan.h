@@ -26,7 +26,7 @@
 
 #include <mcp2515.h>
 
-#define EMUCAN_LIB_VERSION               (F("1.0.3"))
+#define EMUCAN_LIB_VERSION               (F("1.0.4"))
 
 // Available data
 struct emu_data_t {
