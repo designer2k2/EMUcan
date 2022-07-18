@@ -153,6 +153,8 @@ struct emu_data_t {
   uint8_t outflags4; //Outflags 4
   uint8_t pwm1; //%
   uint16_t boostTarget; //kPa
+  uint8_t pwm2; //%
+  float fuel_used; //L
 };
 ```
 
@@ -285,7 +287,7 @@ void specialframefunction(const struct can_frame *frame) {
 
 This Library is tested on Arduino Nano with a MCP2515 shield at 8Mhz.
 
-The EMU Black was running Software Version 2.127.
+The EMU Black was running Software Version 2.154.
 
 ## Different Versions
 
