@@ -26,7 +26,7 @@
 
 #include <mcp2515.h>
 
-#define EMUCAN_LIB_VERSION               (F("1.0.4"))
+#define EMUCAN_LIB_VERSION               (F("1.0.5"))
 
 // Available data
 struct emu_data_t {
@@ -75,6 +75,8 @@ struct emu_data_t {
   uint8_t outflags4; //Outflags 4
   uint8_t pwm1; //%
   uint16_t boostTarget; //kPa
+  uint8_t pwm2; //%
+  float fuel_used; //L
 };
 
 enum EMUcan_STATUS {
