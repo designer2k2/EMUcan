@@ -94,7 +94,7 @@ bool EMUcan::decodeEmuFrame(struct can_frame *msg) {
     //2 TPS in /2 %
     emu_data.TPS = msg->data[2] / 2;
     //3 IAT 8bit signed -40-127°C
-    emu_data.IAT = msg->data[3];
+    emu_data.IAT = int8_t(msg->data[3]);
     //4-5 MAP 16Bit 0-600kpa
     emu_data.MAP = (msg->data[5] << 8) + msg->data[4];
     //6-7 INJPW 0-50 0.016129ms
@@ -110,23 +110,23 @@ bool EMUcan::decodeEmuFrame(struct can_frame *msg) {
   }
   //Base +2:
   if (msg->can_id == _EMUbase + 2) {
-    //0-1 VSPD in 16Bit unsigned
+    //0-1 VSPD in 16Bit unsigned 1 kmh/h / bit
     emu_data.vssSpeed = (msg->data[1] << 8) + msg->data[0];
-    //2 BARO kPa
+    //2 BARO 50-130 kPa
     emu_data.Baro = msg->data[2];
     //3 OILT 0-160°C
     emu_data.oilTemperature = msg->data[3];
-    //4 OILP BAR 0.0625
+    //4 OILP BAR 0.0625 bar/bit
     emu_data.oilPressure = msg->data[4] * 0.0625;
-    //5 FUELP BAR 0.0625
+    //5 FUELP BAR 0.0625 bar/bit
     emu_data.fuelPressure = msg->data[5] * 0.0625;
-    //6-7 CLT 16bit Signed 0.016129ms
-    emu_data.CLT = ((msg->data[7] << 8) + msg->data[6]);
+    //6-7 CLT 16bit Signed -40-250 1 C/bit
+    emu_data.CLT = int16_t(((msg->data[7] << 8) + msg->data[6]));
   }
   //Base +3:
   if (msg->can_id == _EMUbase + 3) {
     //0 IGNANG in 8Bit signed    -60 60  0.5deg/bit
-    emu_data.IgnAngle = msg->data[0] / 2;
+    emu_data.IgnAngle = int8_t(msg->data[0]) / 2;
     //1 DWELL 0-10ms 0.05ms/bit
     emu_data.dwellTime = msg->data[1] * 0.05;
     //2 LAMBDA 8bit 0-2 0.0078125 L/bit
