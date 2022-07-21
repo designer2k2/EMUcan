@@ -169,14 +169,14 @@ bool EMUcan::decodeEmuFrame(struct can_frame *msg) {
     emu_data.boostTarget = ((msg->data[1] << 8) + msg->data[0]);
     //2 PWM#1 DC 1%/bit
     emu_data.pwm1 = msg->data[2];
-	if (msg->can_dlc == 8) {
-		//4 Lambda target 8bit 0.01%/bit 
-		emu_data.lambdaTarget = msg->buf[4] / 100.0;
-		//5 PWM#2 DC 1%/bit
-		emu_data.pwm2 = msg->buf[5];
-		//6-7 Fuel used 16bit 0.01L/bit 
-		emu_data.fuel_used = ((msg->buf[7] << 8) + msg->buf[6]) / 100.0; 
-	}
+    if (msg->can_dlc == 8) {
+      //4 Lambda target 8bit 0.01%/bit
+      emu_data.lambdaTarget = msg->data[4] / 100.0;
+      //5 PWM#2 DC 1%/bit
+      emu_data.pwm2 = msg->data[5];
+      //6-7 Fuel used 16bit 0.01L/bit
+      emu_data.fuel_used = ((msg->data[7] << 8) + msg->data[6]) / 100.0;
+    }
   }
   return true;
 }

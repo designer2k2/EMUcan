@@ -100,7 +100,7 @@ class EMUcan {
     bool sendFrame(const struct can_frame *);
     bool CanCheckError();
     uint8_t CanErrorCounter(bool RXorTX);
-	
+
     // Data
     struct emu_data_t emu_data;
 
@@ -185,7 +185,7 @@ class EMUcan {
     enum EMUcan_STATUS EMUcan_Status = EMUcan_FRESH;
     MCP2515 *getMcp2515();
 
-    void ReturnAllFrames (ReturnAllFramesFunction response); 
+    void ReturnAllFrames (ReturnAllFramesFunction response);
     void ReturnAllFramesStop();
 
     // Privates
