@@ -153,6 +153,21 @@ bool EMUcan::decodeEmuFrame(struct can_frame *msg) {
     //7 ETHANOL %
     emu_data.flexFuelEthanolContent = msg->data[7];
   }
+  //Base +5:
+  if (msg->id == _EMUbase + 5) {
+    //0 DBW Pos 0.5%
+    emu_data.DBWpos = msg->buf[0] * 0.5;
+    //1 DBW Target 0.5%
+    emu_data.DBWtarget = msg->buf[1] * 0.5;
+    //2-3 TC DRPM RAW 16bit  1/bit
+    emu_data.TCdrpmRaw = ((msg->buf[3] << 8) + msg->buf[2]);
+    //4-5 TC DRPM 16bit  1/bit
+    emu_data.TCdrpm = ((msg->buf[5] << 8) + msg->buf[4]);
+    //6 TC Torque reduction %
+    emu_data.TCtorqueReduction = msg->buf[6];
+    //7 Pit Limit Torque reduction %
+    emu_data.PitLimitTorqueReduction = msg->buf[7];
+  }
   //Base +6:
   if (msg->can_id == _EMUbase + 6) {
     //AIN in 16Bit unsigned  0.0048828125 V/bit
@@ -169,6 +184,8 @@ bool EMUcan::decodeEmuFrame(struct can_frame *msg) {
     emu_data.boostTarget = ((msg->data[1] << 8) + msg->data[0]);
     //2 PWM#1 DC 1%/bit
     emu_data.pwm1 = msg->data[2];
+    //3 DSG mode 2=P 3=R 4=N 5=D 6=S 7=M 15=fault
+    emu_data.DSGmode = msg->buf[3];
     if (msg->can_dlc == 8) {
       //4 Lambda target 8bit 0.01%/bit
       emu_data.lambdaTarget = msg->data[4] * 0.01;
