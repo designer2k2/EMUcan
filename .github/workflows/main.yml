@@ -14,3 +14,4 @@ jobs:
           with:
             libraries: |
               - name: autowp-mcp2515
+              - source-path: src
