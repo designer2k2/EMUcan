@@ -13,4 +13,5 @@ jobs:
         - uses: arduino/compile-sketches@v1
           with:
             libraries: |
+              - name: autowp-mcp2515
               - source-path: ./
