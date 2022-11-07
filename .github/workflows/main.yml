@@ -1,0 +1,17 @@
+name: Compile Sketch
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  compile-sketch:
+    runs-on: ubuntu-latest
+
+    steps:
+        - uses: actions/checkout@v2
+        - uses: arduino/compile-sketches@v1
+          with:
+            libraries: |
+              - name: autowp-mcp2515
+              - source-path: ./
