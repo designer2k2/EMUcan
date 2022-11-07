@@ -20,7 +20,9 @@ const long interval = 1000;
 
 void setup() {
   Serial.begin(115200);
+#ifdef LED_BUILTIN
   pinMode(LED_BUILTIN, OUTPUT);
+#endif
 
   //Call this in the setup to init the lib:
   emucan.begin(CAN_500KBPS, MCP_8MHZ);
@@ -87,5 +89,7 @@ void specialframefunction(const struct can_frame *frame) {
   Serial.println();
 
   //Toggle the onboard LED for show:
+#ifdef LED_BUILTIN
   digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+#endif
 }
