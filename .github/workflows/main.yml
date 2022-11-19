@@ -1,4 +1,4 @@
-name: Compile Sketch
+name: Compile Sketch & lint check
 
 on:
   - push
