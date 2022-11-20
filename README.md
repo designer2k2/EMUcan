@@ -5,7 +5,7 @@ It reads the EMU CAN Stream and decodes it into something usefull.
 
 It also can send data to the EMU!
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![arduino-library-badge](https://www.ardu-badge.com/badge/EMUcan.svg?)](https://www.ardu-badge.com/EMUcan)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![arduino-library-badge](https://www.ardu-badge.com/badge/EMUcan.svg?)](https://www.ardu-badge.com/EMUcan) [![CI badge](https://github.com/designer2k2/EMUcan/actions/workflows/main.yml/badge.svg)](https://github.com/designer2k2/EMUcan/actions)
 
 **Content:**
 
