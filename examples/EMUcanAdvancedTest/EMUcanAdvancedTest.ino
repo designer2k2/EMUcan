@@ -64,7 +64,7 @@ void loop() {
     Serial.print("TX error count: ");
     Serial.println(emucan.CanErrorCounter(true));
 
-    //retreive the mcp2515 object for direct access
+    //retrieve the mcp2515 object for direct access
     MCP2515 mcp = *emucan.getMcp2515();
     //call the getErrorFlags function from the mcp2515 lib:
     uint8_t eflg = mcp.getErrorFlags();
