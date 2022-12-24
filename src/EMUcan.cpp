@@ -45,7 +45,7 @@ bool EMUcan::checkEMUcan() {
     //Clear RX1OVR Flag:
     mcp2515->clearRXnOVR();
     //Check if Message is within Range of 0-7 from base:
-    if ( canMsg.can_id >= _EMUbase && canMsg.can_id <= _EMUbase + 7) {
+    if (canMsg.can_id >= _EMUbase && canMsg.can_id <= _EMUbase + 7) {
       //So messages here should be decoded!
       decodeEmuFrame(&canMsg);
       //Store the event:
@@ -204,14 +204,14 @@ MCP2515 *EMUcan::getMcp2515() {
 
 bool EMUcan::decodeCel() {
   //Returns true if an CEL error is on:
-  if ( emu_data.cel & EFLG_ERRORMASK ) {
+  if (emu_data.cel & EFLG_ERRORMASK) {
     return true;
   } else {
     return false;
   }
 }
 
-void EMUcan::ReturnAllFrames (ReturnAllFramesFunction response) {
+void EMUcan::ReturnAllFrames(ReturnAllFramesFunction response) {
   _returnfunction = response;
   _returnexists = true;
 }
@@ -224,12 +224,10 @@ bool EMUcan::CanCheckError() {
   return mcp2515->checkError();
 }
 
-uint8_t EMUcan::CanErrorCounter(bool RXorTX)
-{
+uint8_t EMUcan::CanErrorCounter(bool RXorTX) {
   if (RXorTX == false) {
     return mcp2515->errorCountRX();
-  }
-  else {
+  } else {
     return mcp2515->errorCountTX();
   }
 }

@@ -31,13 +31,12 @@ void setup() {
   emucan.begin(CAN_500KBPS, MCP_8MHZ);
 
   // Frame to be send:
-  canMsg1.can_id  = 0x0F6;
+  canMsg1.can_id = 0x0F6;
   canMsg1.can_dlc = 2;
   canMsg1.data[0] = 0xFF;
   canMsg1.data[1] = 0x00;
 
   Serial.println("------- CAN Send ----------");
-
 }
 
 void loop() {
@@ -58,6 +57,5 @@ void loop() {
 
     Serial.print("Message sent: ");
     Serial.println(countUp);
-
   }
 }

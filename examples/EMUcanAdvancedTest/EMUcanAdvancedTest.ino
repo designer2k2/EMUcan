@@ -35,7 +35,6 @@ void setup() {
   emucan.ReturnAllFrames(LetMeHaveIt);
 
   Serial.println("------- CAN Read ----------");
-
 }
 
 void loop() {
@@ -64,25 +63,24 @@ void loop() {
     Serial.print("TX error count: ");
     Serial.println(emucan.CanErrorCounter(true));
 
-    //retreive the mcp2515 object for direct access
+    //retrieve the mcp2515 object for direct access
     MCP2515 mcp = *emucan.getMcp2515();
     //call the getErrorFlags function from the mcp2515 lib:
     uint8_t eflg = mcp.getErrorFlags();
     Serial.print("eflg register:");
     Serial.println(eflg);
   }
-
 }
 
 // self defined function to handle all frames:
 void specialframefunction(const struct can_frame *frame) {
   //Magic things can happen here, but dont block!
-  Serial.print(frame->can_id, HEX); // print ID
+  Serial.print(frame->can_id, HEX);  // print ID
   Serial.print(" ");
-  Serial.print(frame->can_dlc, HEX); // print DLC
+  Serial.print(frame->can_dlc, HEX);  // print DLC
   Serial.print(" ");
 
-  for (int i = 0; i < frame->can_dlc; i++)  { // print the data
+  for (int i = 0; i < frame->can_dlc; i++) {  // print the data
     Serial.print(frame->data[i], HEX);
     Serial.print(" ");
   }

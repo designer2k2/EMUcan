@@ -1,0 +1,28 @@
+name: Clang format check
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  formatting-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout this repo
+      uses: actions/checkout@v3
+    
+    - name: Checkout arduino clang format
+      uses: actions/checkout@v3
+      with:
+         repository: arduino/tooling-project-assets
+         path: atpa
+    
+    - name: Copy the .clang-format file
+      run: |
+        cp "./atpa/other/clang-format-configuration/.clang-format" ".clang-format"
+        rm -r "./atpa"
+    - name: Run clang-format style check
+      uses: jidicula/clang-format-action@v4.9.0
+      with:
+        clang-format-version: '14' 

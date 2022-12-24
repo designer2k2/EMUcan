@@ -1,7 +1,7 @@
 # EMUcan
 ECUMaster EMU CAN Stream Reader Arduino Library
 
-It reads the EMU CAN Stream and decodes it into something usefull.
+It reads the EMU CAN Stream and decodes it into something useful.
 
 It also can send data to the EMU!
 

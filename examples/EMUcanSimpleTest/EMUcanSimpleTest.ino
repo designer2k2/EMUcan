@@ -24,7 +24,6 @@ void setup() {
   emucan.begin(CAN_500KBPS, MCP_8MHZ);
 
   Serial.println("------- CAN Read ----------");
-
 }
 
 void loop() {
