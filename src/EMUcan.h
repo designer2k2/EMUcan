@@ -1,18 +1,18 @@
 /* Copyright (C) designer2k2 Stephan M.
-  # This file is part of EMUcan <https://github.com/designer2k2/EMUcan>.
+  # This file is part of EMUcanT4 <https://github.com/designer2k2/EMUcanT4>.
   #
-  # EMUcan is free software: you can redistribute it and/or modify
+  # EMUcanT4 is free software: you can redistribute it and/or modify
   # it under the terms of the GNU General Public License as published by
   # the Free Software Foundation, either version 3 of the License, or
   # (at your option) any later version.
   #
-  # EMUcan is distributed in the hope that it will be useful,
+  # EMUcanT4 is distributed in the hope that it will be useful,
   # but WITHOUT ANY WARRANTY; without even the implied warranty of
   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   # GNU General Public License for more details.
   #
   # You should have received a copy of the GNU General Public License
-  # along with EMUcan.  If not, see <http://www.gnu.org/licenses/>.
+  # along with EMUcanT4.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #ifndef _EMUcan_h
@@ -24,9 +24,7 @@
 #include "WProgram.h"
 #endif
 
-#include <mcp2515.h>
-
-#define EMUCAN_LIB_VERSION (F("1.0.7"))
+#define EMUCAN_LIB_VERSION (F("2.0.0"))
 
 // Available data
 struct emu_data_t {
@@ -81,25 +79,22 @@ enum EMUcan_STATUS {
   EMUcan_FRESH,
   EMUcan_RECEIVED_WITHIN_LAST_SECOND,
   EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND,
+  EMUcan_CANBUSERROR
 };
-
-typedef void (*ReturnAllFramesFunction)(const struct can_frame *);
 
 class EMUcan {
 
 public:
   // Constructor
-  EMUcan(uint32_t EMUbase = 0x600, uint8_t cs = 10);
+  EMUcan(const uint32_t EMUbase = 0x600);
 
   // Methods
-  void begin(const CAN_SPEED canSpeed);
-  void begin(const CAN_SPEED canSpeed, const CAN_CLOCK canClock);
-  bool checkEMUcan();
-  bool sendFrame(const struct can_frame *);
-  bool CanCheckError();
-  uint8_t CanErrorCounter(bool RXorTX);
+  void begin(const uint32_t canSpeed);
+  bool checkEMUcan(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]);
+  bool decodeCel();
 
   // Data
+  enum EMUcan_STATUS EMUcan_Status = EMUcan_FRESH;
   struct emu_data_t emu_data;
 
   enum ERRORFLAG : uint16_t {
@@ -179,27 +174,17 @@ public:
     F_BOOST_MAP_SET = (1 << 6),
   };
 
-  bool decodeCel();
-  enum EMUcan_STATUS EMUcan_Status = EMUcan_FRESH;
-  MCP2515 *getMcp2515();
-
-  void ReturnAllFrames(ReturnAllFramesFunction response);
-  void ReturnAllFramesStop();
-
   // Privates
 private:
-
-  bool _returnexists = false;
-  ReturnAllFramesFunction _returnfunction;
 
   enum EMU_STATUS_UPDATES {
     EMU_MESSAGE_RECEIVED_VALID,
     EMU_RECEIVED_NOTHING
   };
-  uint8_t _cs;
-  MCP2515 *mcp2515;
-  bool decodeEmuFrame(struct can_frame *msg);
+
+  void decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]);
   void emucanstatusEngine(const EMU_STATUS_UPDATES action);
+
   uint32_t _EMUbase;
   unsigned long _previousMillis = 0;
 };

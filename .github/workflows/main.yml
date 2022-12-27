@@ -1,4 +1,4 @@
-name: Compile Sketch & lint check
+name: Compile Sketches & lint check
 
 on:
   - push
@@ -7,15 +7,50 @@ on:
 jobs:
   compile-sketch:
     runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
 
     steps:
-        - uses: actions/checkout@v3
-        - uses: arduino/compile-sketches@v1
-          with:
-            libraries: |
-              - name: autowp-mcp2515
-              - source-path: ./
-        - uses: arduino/arduino-lint-action@v1
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Compile MCP2515 example
+        uses: arduino/compile-sketches@v1
+        with:
+          libraries: |
+            - name: autowp-mcp2515
+            - source-path: ./
+          sketch-paths: |
+            - examples/EMUcan_MCP2515/EMUcan_MCP2515.ino 
+ 
+      - name: Compile ESP32 example
+        uses: arduino/compile-sketches@v1
+        with:
+          fqbn: esp32:esp32:esp32
+          platforms: |
+            - name: esp32:esp32
+              source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+          libraries: |
+            - source-path: ./
+          sketch-paths: |
+            - examples/EMUcan_ESP32/EMUcan_ESP32.ino
+    
+       - name: Compile Teensy example
+        uses: arduino/compile-sketches@main
+        with:
+          platforms: |
+            - name: "teensy:avr"
+              source-url: https://www.pjrc.com/teensy/td_156/package_teensy_index.json
+              version: "1.57.0"
+          fqbn: "teensy:avr:teensy40"
+          libraries: |
+            - source-path: ./ 
+          sketch-paths: |
+            - examples/EMUcan_Teensy/EMUcan_Teensy.ino            
+    
+      - name: Lint check
+        uses: arduino/arduino-lint-action@v1
           with:
             library-manager: update
             compliance: strict

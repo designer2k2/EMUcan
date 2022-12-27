@@ -1,7 +1,7 @@
 {
 	"name": "EMUcan",
 	"keywords": "EMU, Ecumaster, CAN, EMU Black, Arduino",
-	"description": "Library to read and decode the ECUMaster default CAN Stream with a MCP2515. It can also send data to the EMU.",
+	"description": "Library to read and decode the ECUMaster default CAN Stream.",
 	"authors": [{
 		"name": "Stephan M.",
 		"email": "designer2k2@gmail.com",
@@ -11,12 +11,8 @@
 		"type": "git",
 		"url": "https://github.com/designer2k2/EMUcan"
 	},
-	"version": "1.0.7",
+	"version": "2.0.0",
 	"license": "GPL-3.0-only",
 	"frameworks": "arduino",
 	"platforms": "*",
-	"dependencies": {
-		"autowp/arduino-mcp2515": ">1.0.1",
-		"external-zip": "https://github.com/autowp/arduino-mcp2515/archive/refs/heads/master.zip"
-	}
 }
