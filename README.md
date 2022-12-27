@@ -216,14 +216,11 @@ if (emucan.emu_data.cel & emucan.ERR_CLT) {
 }
 ```
 
-In the EMU Black Software use this to define the receive:
-https://github.com/designer2k2/EMUcan/blob/main/examples/EMUcanSendTest/EMUBlackCANStreamExample.canstr
-
 # Others
 
 This Library is tested on Arduino Nano with a MCP2515 shield at 8Mhz.
 
-Further on a Teensy4 and ESP32 with SN65HVD232 transceiver.
+Further on a Teensy4, Teensy3 and ESP32 with SN65HVD232 transceiver.
 
 The EMU Black was running Software Version 2.154.
 
@@ -233,7 +230,7 @@ For using the ECUMaster serial stream instead of the CAN Bus use this library: h
 
 ## Migrate from version below 2, or the EMUcanT4
 
-before Version 2, or in the EMUcanT4, the CAN Bus handling was part of the EMUcan lib. Now from Version 2 onwards you have to basically set this up now by yourself and handover the CAN frame into the EMUcan library. 
+before Version 2, or in the EMUcanT4, the CAN Bus handling was part of the EMUcan lib. Now from Version 2 onwards you have to basically set this up by yourself and handover the CAN frame into the EMUcan library. 
 
 This gives you full control over the CAN interface, it also enables this library to be run on basically every hardware.
 
