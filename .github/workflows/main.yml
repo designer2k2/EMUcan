@@ -8,9 +8,6 @@ jobs:
   compile-sketch:
     runs-on: ubuntu-latest
     
-    strategy:
-      fail-fast: false
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -36,7 +33,7 @@ jobs:
           sketch-paths: |
             - examples/EMUcan_ESP32/EMUcan_ESP32.ino
     
-       - name: Compile Teensy example
+      - name: Compile Teensy example
         uses: arduino/compile-sketches@main
         with:
           platforms: |
@@ -51,6 +48,6 @@ jobs:
     
       - name: Lint check
         uses: arduino/arduino-lint-action@v1
-          with:
-            library-manager: update
-            compliance: strict
+        with:
+          library-manager: update
+          compliance: strict
