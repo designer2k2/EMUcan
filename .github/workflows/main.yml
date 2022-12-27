@@ -5,7 +5,7 @@ on:
   - pull_request
 
 jobs:
-  compile-sketch:
+  compile-sketch-mcp2515:
     runs-on: ubuntu-latest
     
     steps:
@@ -20,7 +20,13 @@ jobs:
             - source-path: ./
           sketch-paths: |
             - examples/EMUcan_MCP2515/EMUcan_MCP2515.ino 
- 
+            
+  compile-sketch-esp32:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3 
       - name: Compile ESP32 example
         uses: arduino/compile-sketches@v1
         with:
@@ -32,7 +38,13 @@ jobs:
             - source-path: ./
           sketch-paths: |
             - examples/EMUcan_ESP32/EMUcan_ESP32.ino
+            
+  compile-sketch-teensy:
+    runs-on: ubuntu-latest
     
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3    
       - name: Compile Teensy example
         uses: arduino/compile-sketches@main
         with:
@@ -45,7 +57,13 @@ jobs:
             - source-path: ./ 
           sketch-paths: |
             - examples/EMUcan_Teensy/EMUcan_Teensy.ino            
+
+  lint-check:
+    runs-on: ubuntu-latest
     
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - name: Lint check
         uses: arduino/arduino-lint-action@v1
         with:
