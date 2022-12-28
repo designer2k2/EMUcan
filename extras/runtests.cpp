@@ -53,7 +53,24 @@ void run_tests() {
   }
 
   // Based on the frame from above:
-  cout << "emuTemp: " << std::to_string(emucan.emu_data.emuTemp) << endl;
+  if (emucan.emu_data.emuTemp == 15) {
+    cout << "EMUcan decode frame ok" << endl;
+    cout << "emuTemp: " << std::to_string(emucan.emu_data.emuTemp) << endl;
+  } else {
+    throw std::runtime_error("EMUcan decode not ok.");
+  }
+
+  // Sleep 2 seconds that the status drops:
+  sleep(2);
+
+  // Now the status has to be that something was received:
+  if (emucan.EMUcan_Status() == EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND) {
+    cout << "EMUcan status update ok" << endl;
+  } else {
+    throw std::runtime_error("EMUcan status update not ok.");
+  }
+
+  cout << "EMUcan check complete, all ok." << endl;
 }
 
 int main(int argc, char **argv) {
