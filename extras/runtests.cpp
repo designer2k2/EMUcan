@@ -31,6 +31,11 @@ void delay_test() {
 
 void run_tests() {
   EMUcan emucan(0x600);
+  if (emucan.EMUcan_Status() == EMUcan_FRESH) {
+    cout << "EMUcan init ok";
+  } else {
+    throw std::runtime_error("EMUcan init not ok");
+  }
 }
 
 int main(int argc, char **argv) {
