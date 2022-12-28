@@ -15,6 +15,8 @@
   # along with EMUcanT4.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstdint>
+
 #ifndef _EMUcan_h
 #define _EMUcan_h
 
