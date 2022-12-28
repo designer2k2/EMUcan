@@ -1,4 +1,4 @@
-name: Compile Sketches & lint check
+name: Compile Examples
 
 on:
   - push
@@ -56,16 +56,4 @@ jobs:
           libraries: |
             - source-path: ./ 
           sketch-paths: |
-            - examples/EMUcan_Teensy/EMUcan_Teensy.ino            
-
-  lint-check:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Lint check
-        uses: arduino/arduino-lint-action@v1
-        with:
-          library-manager: update
-          compliance: strict
+            - examples/EMUcan_Teensy/EMUcan_Teensy.ino
