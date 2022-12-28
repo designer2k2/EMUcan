@@ -1,12 +1,11 @@
-#include <sys/timeb.h>
-#include <stdint.h>
-#include "WProgram.h"
+#include <time.h>
+#include "mock_arduino.h"
 
-timeb t_start;
+struct timespec t_start;
 unsigned long millis() {
-  timeb t_now;
-  ftime(&t_now);
-  return (t_now.time - t_start.time) * 1000 + (t_now.millitm - t_start.millitm);
+  struct timespec t_now;
+  clock_gettime(CLOCK_MONOTONIC_RAW, &t_now);
+  return (t_now.tv_sec - t_start.tv_sec) * 1000 + (t_now.tv_nsec - t_start.tv_nsec) / 1000000;
 }
 
 void delay(unsigned long ms) {
@@ -15,5 +14,5 @@ void delay(unsigned long ms) {
 }
 
 void initialize_mock_arduino() {
-  ftime(&t_start);
+  clock_gettime(CLOCK_MONOTONIC_RAW, &t_start);
 }
