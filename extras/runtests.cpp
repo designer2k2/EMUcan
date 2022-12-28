@@ -42,7 +42,7 @@ void run_tests() {
 
   // Generate a can frame and hand it over:
   uint8_t data[8] = { 0x00, 0x0f, 0x13, 0x02, 0x00, 0x00, 0x08, 0x00 };
-  emucan.checkEMUcan(0x604, 8, canMsg.buf);
+  emucan.checkEMUcan(0x604, 8, data);
 
 
   // Now the status has to be that something was received:
