@@ -18,12 +18,6 @@
 #ifndef _EMUcan_h
 #define _EMUcan_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
-
 #define EMUCAN_LIB_VERSION (F("2.0.0"))
 
 // Available data
