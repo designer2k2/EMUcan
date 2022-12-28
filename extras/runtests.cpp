@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <stdexcept>
 #include <iostream>
+#include <string>
 
 #include "WProgram.h"
 #include "EMUcan.h"
@@ -44,16 +45,15 @@ void run_tests() {
   uint8_t data[8] = { 0x00, 0x0f, 0x13, 0x02, 0x00, 0x00, 0x08, 0x00 };
   emucan.checkEMUcan(0x604, 8, data);
 
-
   // Now the status has to be that something was received:
   if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
-    cout << "EMUcan init ok" << endl;
+    cout << "EMUcan status update ok" << endl;
   } else {
-    throw std::runtime_error("EMUcan init not ok");
+    throw std::runtime_error("EMUcan status update not ok.");
   }
 
   // Based on the frame from above:
-  cout << "emuTemp: " << emucan.emu_data.emuTemp << endl;
+  cout << "emuTemp: " << std::to_string(emucan.emu_data.emuTemp) << endl;
 }
 
 int main(int argc, char **argv) {
