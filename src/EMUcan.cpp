@@ -165,7 +165,7 @@ void EMUcan::_decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) 
     emu_data.pwm1 = data[2];
     //3 DSG mode 2=P 3=R 4=N 5=D 6=S 7=M 15=fault
     emu_data.DSGmode = data[3];
-    //since version 143 this contains more data, check lenght:
+    //since version 143 this contains more data, check length:
     if (can_dlc == 8) {
       //4 Lambda target 8bit 0.01%/bit
       emu_data.lambdaTarget = data[4] * 0.01;
