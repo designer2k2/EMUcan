@@ -43,8 +43,7 @@ void run_tests() {
 
 int main(int argc, char **argv) {
   initialize_mock_arduino();
-  // throw std::runtime_error( "Just for the test, let it fail" );
-  delay_test();
-  millis_test();
+  //delay_test();
+  //millis_test();
   run_tests();
 }
