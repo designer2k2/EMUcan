@@ -92,9 +92,9 @@ public:
   void begin(const uint32_t canSpeed);
   bool checkEMUcan(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]);
   bool decodeCel();
+  EMUcan_STATUS EMUcan_Status();
 
   // Data
-  enum EMUcan_STATUS EMUcan_Status = EMUcan_FRESH;
   struct emu_data_t emu_data;
 
   enum ERRORFLAG : uint16_t {
@@ -177,13 +177,15 @@ public:
   // Privates
 private:
 
+  enum EMUcan_STATUS _EMUcan_Status = EMUcan_FRESH;
+
   enum EMU_STATUS_UPDATES {
     EMU_MESSAGE_RECEIVED_VALID,
     EMU_RECEIVED_NOTHING
   };
 
-  void decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]);
-  void emucanstatusEngine(const EMU_STATUS_UPDATES action);
+  void _decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]);
+  void _emucanstatusEngine(const EMU_STATUS_UPDATES action);
 
   uint32_t _EMUbase;
   unsigned long _previousMillis = 0;

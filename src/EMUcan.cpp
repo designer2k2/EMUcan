@@ -30,35 +30,40 @@ bool EMUcan::checkEMUcan(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) {
   //Check if Message is within Range of 0-7 from base:
   if (can_id >= _EMUbase && can_id <= _EMUbase + 7) {
     //So messages here should be decoded!
-    decodeEmuFrame(can_id, can_dlc, data);
+    _decodeEmuFrame(can_id, can_dlc, data);
     //Store the event:
-    emucanstatusEngine(EMU_MESSAGE_RECEIVED_VALID);
+    _emucanstatusEngine(EMU_MESSAGE_RECEIVED_VALID);
     return true;
   } else {
-    emucanstatusEngine(EMU_RECEIVED_NOTHING);
+    _emucanstatusEngine(EMU_RECEIVED_NOTHING);
     return false;
   }
 }
 
-void EMUcan::emucanstatusEngine(const EMU_STATUS_UPDATES action) {
+void EMUcan::_emucanstatusEngine(const EMU_STATUS_UPDATES action) {
   //check the current time versus the last to define the status.
   unsigned long currentMillis = millis();
   switch (action) {
     case EMU_RECEIVED_NOTHING:
       if (currentMillis - _previousMillis >= 1000) {
-        EMUcan_Status = EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND;
+        _EMUcan_Status = EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND;
       }
       break;
     case EMU_MESSAGE_RECEIVED_VALID:
       _previousMillis = currentMillis;
-      EMUcan_Status = EMUcan_RECEIVED_WITHIN_LAST_SECOND;
+      _EMUcan_Status = EMUcan_RECEIVED_WITHIN_LAST_SECOND;
       break;
     default:
       break;
   }
 }
 
-void EMUcan::decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) {
+EMUcan_STATUS EMUcan::EMUcan_Status() {
+  _emucanstatusEngine(EMU_RECEIVED_NOTHING);
+  return _EMUcan_Status;
+}
+
+void EMUcan::_decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) {
   //This decodes the frames and fills them into the data:
 
   //Base:
@@ -160,7 +165,7 @@ void EMUcan::decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) {
     emu_data.pwm1 = data[2];
     //3 DSG mode 2=P 3=R 4=N 5=D 6=S 7=M 15=fault
     emu_data.DSGmode = data[3];
-    //since version 143 this contains more data, check length:
+    //since version 143 this contains more data, check lenght:
     if (can_dlc == 8) {
       //4 Lambda target 8bit 0.01%/bit
       emu_data.lambdaTarget = data[4] * 0.01;

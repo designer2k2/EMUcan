@@ -12,12 +12,11 @@
 
 
 #include "EMUcan.h"
+EMUcan emucan(0x600);
 
 #include <mcp2515.h>
 struct can_frame canMsg;
 MCP2515 mcp2515(10);
-
-EMUcan emucan(0x600);
 
 unsigned long previousMillis = 0;
 const long interval = 500;
@@ -25,7 +24,6 @@ const long interval = 500;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  pinMode(LED_BUILTIN, OUTPUT);
 
   Serial.print("EMUCAN_LIB_VERSION: ");
   Serial.println(EMUCAN_LIB_VERSION);
@@ -49,7 +47,7 @@ void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
-    if (emucan.EMUcan_Status == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
+    if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
       Serial.print(emucan.emu_data.RPM);
       Serial.print(";");
       Serial.print(emucan.emu_data.TPS);
@@ -60,7 +58,6 @@ void loop() {
       Serial.print(";");
       Serial.println(emucan.emu_data.pulseWidth);
     } else {
-      Serial.print(emucan.emu_data.RPM);
       Serial.println("No communication from EMU");
     }
     if (emucan.emu_data.flags1 & emucan.F_IDLE) {

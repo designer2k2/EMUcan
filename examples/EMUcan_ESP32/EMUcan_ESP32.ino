@@ -10,6 +10,7 @@
 #include "EMUcan.h"
 EMUcan emucan(0x600);
 
+// Needed for the CAN Interface on the ESP32 (called TWAI):
 #include "driver/twai.h"
 
 // Pins used to connect to CAN bus transceiver:
@@ -77,7 +78,7 @@ void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
-    if (emucan.EMUcan_Status == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
+    if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
       Serial.print(emucan.emu_data.RPM);
       Serial.print(";");
       Serial.print(emucan.emu_data.TPS);
@@ -88,7 +89,6 @@ void loop() {
       Serial.print(";");
       Serial.println(emucan.emu_data.pulseWidth);
     } else {
-      Serial.print(emucan.emu_data.RPM);
       Serial.println("No communication from EMU");
     }
     if (emucan.emu_data.flags1 & emucan.F_IDLE) {
