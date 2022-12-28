@@ -12,10 +12,12 @@
 
 
 #include "EMUcan.h"
+// EMU initialized with base ID 600:
 EMUcan emucan(0x600);
 
 #include <mcp2515.h>
 struct can_frame canMsg;
+// MCP2515 with chip select (CS) pin 10:
 MCP2515 mcp2515(10);
 
 unsigned long previousMillis = 0;
@@ -62,6 +64,9 @@ void loop() {
     }
     if (emucan.emu_data.flags1 & emucan.F_IDLE) {
       Serial.println("Engine Idle active");
+    }
+    if (emucan.decodeCel()) {
+      Serial.println("WARNING Engine CEL active");
     }
   }
 }

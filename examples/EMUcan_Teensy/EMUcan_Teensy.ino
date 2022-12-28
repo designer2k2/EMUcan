@@ -7,6 +7,7 @@
 // Stephan Martin 27.12.2022
 
 #include "EMUcan.h"
+// EMU initialized with base ID 600:
 EMUcan emucan(0x600);
 
 // CAN Things, CAN1 on pin22 pin23 is used at Teensy 4, and CAN0 on Teensy 3:
@@ -18,10 +19,6 @@ FlexCAN_T4<CAN0, RX_SIZE_256, TX_SIZE_16> can1;
 #endif
 
 CAN_message_t canMsg;
-
-// Pins used to connect to CAN bus transceiver:
-#define RX_PIN 21
-#define TX_PIN 22
 
 unsigned long previousMillis = 0;
 const long interval = 500;
@@ -75,6 +72,9 @@ void loop() {
     }
     if (emucan.emu_data.flags1 & emucan.F_IDLE) {
       Serial.println("Engine Idle active");
+    }
+    if (emucan.decodeCel()) {
+      Serial.println("WARNING Engine CEL active");
     }
   }
 }

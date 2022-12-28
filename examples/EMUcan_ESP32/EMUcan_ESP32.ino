@@ -8,6 +8,7 @@
 
 
 #include "EMUcan.h"
+// EMU initialized with base ID 600:
 EMUcan emucan(0x600);
 
 // Needed for the CAN Interface on the ESP32 (called TWAI):
@@ -39,7 +40,6 @@ void setup() {
     Serial.println("Driver installed");
   } else {
     Serial.println("Failed to install driver");
-    return;
   }
 
   // Start TWAI driver
@@ -47,7 +47,6 @@ void setup() {
     Serial.println("Driver started");
   } else {
     Serial.println("Failed to start driver");
-    return;
   }
 
   // Reconfigure alerts to detect frame receive, Bus-Off error and RX queue full states
@@ -56,7 +55,6 @@ void setup() {
     Serial.println("CAN Alerts reconfigured");
   } else {
     Serial.println("Failed to reconfigure alerts");
-    return;
   }
 }
 
@@ -93,6 +91,9 @@ void loop() {
     }
     if (emucan.emu_data.flags1 & emucan.F_IDLE) {
       Serial.println("Engine Idle active");
+    }
+    if (emucan.decodeCel()) {
+      Serial.println("WARNING Engine CEL active");
     }
   }
 }
