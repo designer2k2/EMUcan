@@ -51,7 +51,7 @@ void run_tests() {
   cout << "EMUcan check complete, all ok." << endl;
 }
 
-int main(int argc, char **argv) {
+int main() {
   initialize_mock_arduino();
   run_tests();
 }
