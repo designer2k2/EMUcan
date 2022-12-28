@@ -15,7 +15,7 @@ jobs:
     - name: Build the test
       run: |
         g++ --version
-        g++ extras/*.cpp /src/*.cpp -I./extras -I./src
+        g++ extras/*.cpp src/*.cpp -I./extras -I./src
         
     - name: Run the test
       run: |
