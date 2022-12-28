@@ -1,5 +1,6 @@
 #include<unistd.h>
 #include<stdexcept>
+#include<iostream>
 
 #include "WProgram.h"
 #include "EMUcan.h"
