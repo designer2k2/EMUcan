@@ -8,28 +8,6 @@
 
 using namespace std;
 
-void millis_test() {
-  unsigned long start = millis();
-  cout << "millis() test start: " << start << endl;
-  while (millis() - start < 10000) {
-    cout << millis() << endl;
-    sleep(1);
-  }
-  unsigned long end = millis();
-  cout << "End of test - duration: " << end - start << "ms" << endl;
-}
-
-void delay_test() {
-  unsigned long start = millis();
-  cout << "delay() test start: " << start << endl;
-  while (millis() - start < 10000) {
-    cout << millis() << endl;
-    delay(250);
-  }
-  unsigned long end = millis();
-  cout << "End of test - duration: " << end - start << "ms" << endl;
-}
-
 void run_tests() {
   // Init the library:
   EMUcan emucan(0x600);
@@ -75,7 +53,5 @@ void run_tests() {
 
 int main(int argc, char **argv) {
   initialize_mock_arduino();
-  //delay_test();
-  //millis_test();
   run_tests();
 }
