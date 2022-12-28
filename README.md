@@ -43,6 +43,8 @@ When installed you will also see a few examples in `File` → `Examples` → `EM
 
 In the EMU Black, set the CAN-Bus speed to 500 Kpbs and enable "Send EMU stream over CAN-Bus".
 
+The CAN-Bus speed can be modified, see in the examples on how to do it depending on the hardware.
+
 The EMU Stream base ID can be changed, the begin function takes this as parameter.
 
 
@@ -58,7 +60,7 @@ For ESP32 / Teensy: Tested CAN Bus Transceiver can be found here: https://github
 
 ## Initialization
 
-To create connection with the EMU Can Base (600 by default)
+To start the library with EMU Can Base (600 by default)
 
 ```C++
 EMUcan emucan(0x600);
@@ -74,24 +76,14 @@ Call this for every received CAN frame:
 emucan.checkEMUcan(can_id, can_dlc, data);
 ```
 
+Where the `can_id` is the ID from the message. `can_dlc` is the data length and `data` the actual data.
+
 For the MCP2515 this could look like:
 
 ```
   if (mcp2515.readMessage(&canMsg) == MCP2515::ERROR_OK) {
     emucan.checkEMUcan(canMsg.can_id, canMsg.can_dlc, canMsg.data);
   }
-```
-
-## Status
-
-The EMUcan library provides its status:
-
-```C++
-enum EMUcan_STATUS {
-  EMUcan_FRESH,
-  EMUcan_RECEIVED_WITHIN_LAST_SECOND,
-  EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND,
-};
 ```
 
 ## Reading the Values
@@ -108,51 +100,51 @@ see https://github.com/designer2k2/EMUcan/blob/main/src/EMUcan.h
 ```C++
 // Available data
 struct emu_data_t {
-  uint16_t RPM;  //RPM
-  uint16_t MAP;  //kPa
-  uint8_t TPS;  //%
-  int8_t IAT;  //C
-  float Batt;  //V
-  float IgnAngle;  //deg
-  float pulseWidth;  //ms
-  uint16_t Egt1;  //C
-  uint16_t Egt2;  //C
-  float dwellTime;  //ms
-  int8_t gear;  //
-  uint8_t Baro;  //kPa
-  float analogIn1;  //V
-  float analogIn2;  //V
-  float analogIn3;  //V
-  float analogIn4;  //V
-  float analogIn5;  //V
-  float analogIn6;  //V
-  int8_t emuTemp;  //C
-  float oilPressure;  //Bar
-  uint8_t oilTemperature;  //C
-  float fuelPressure;  //Bar
-  int16_t CLT;  //C
-  float flexFuelEthanolContent;  //%
-  float wboLambda;  //λ
-  uint16_t vssSpeed;  //km/h
-  float lambdaTarget;  //λ
-  uint16_t cel;  //
-  float LambdaCorrection; //%
-  uint8_t flags1; //Flags 1
-  uint8_t outflags1; //Outflags 1
-  uint8_t outflags2; //Outflags 2
-  uint8_t outflags3; //Outflags 3
-  uint8_t outflags4; //Outflags 4
-  uint8_t pwm1; //%
-  uint16_t boostTarget; //kPa
-  uint8_t pwm2; //%
-  float fuel_used; //L
-  uint8_t DSGmode; //DSG mode
-  float DBWpos; //%
-  float DBWtarget; //%
-  uint16_t TCdrpmRaw; //
-  uint16_t TCdrpm; //
-  uint8_t TCtorqueReduction; //%
-  uint8_t PitLimitTorqueReduction; //%
+  uint16_t RPM;                     //RPM
+  uint16_t MAP;                     //kPa
+  uint8_t TPS;                      //%
+  int8_t IAT;                       //C
+  float Batt;                       //V
+  float IgnAngle;                   //deg
+  float pulseWidth;                 //ms
+  uint16_t Egt1;                    //C
+  uint16_t Egt2;                    //C
+  float dwellTime;                  //ms
+  int8_t gear;                      //
+  uint8_t Baro;                     //kPa
+  float analogIn1;                  //V
+  float analogIn2;                  //V
+  float analogIn3;                  //V
+  float analogIn4;                  //V
+  float analogIn5;                  //V
+  float analogIn6;                  //V
+  int8_t emuTemp;                   //C
+  float oilPressure;                //Bar
+  uint8_t oilTemperature;           //C
+  float fuelPressure;               //Bar
+  int16_t CLT;                      //C
+  float flexFuelEthanolContent;     //%
+  float wboLambda;                  //λ
+  uint16_t vssSpeed;                //km/h
+  float lambdaTarget;               //λ
+  uint16_t cel;                     //
+  float LambdaCorrection;           //%
+  uint8_t flags1;                   //Flags 1
+  uint8_t outflags1;                //Outflags 1
+  uint8_t outflags2;                //Outflags 2
+  uint8_t outflags3;                //Outflags 3
+  uint8_t outflags4;                //Outflags 4
+  uint8_t pwm1;                     //%
+  uint16_t boostTarget;             //kPa
+  uint8_t pwm2;                     //%
+  float fuel_used;                  //L
+  uint8_t DSGmode;                  //DSG mode
+  float DBWpos;                     //%
+  float DBWtarget;                  //%
+  uint16_t TCdrpmRaw;               //
+  uint16_t TCdrpm;                  //
+  uint8_t TCtorqueReduction;        //%
+  uint8_t PitLimitTorqueReduction;  //%
 };
 ```
 
@@ -215,6 +207,28 @@ if (emucan.emu_data.cel & emucan.ERR_CLT) {
   Serial.println("WARNING Engine CEL active due to CLT");
 }
 ```
+
+## Status
+
+The EMUcan library provides its status:
+
+```C++
+enum EMUcan_STATUS {
+  EMUcan_FRESH,
+  EMUcan_RECEIVED_WITHIN_LAST_SECOND,
+  EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND,
+};
+```
+
+Reading the status:
+```C++
+    if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
+      Serial.println("Data from EMU received");
+    } else {
+      Serial.println("No communication from EMU");
+    }
+```
+
 
 # Others
 
