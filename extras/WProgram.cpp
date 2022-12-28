@@ -1,4 +1,5 @@
 #include <sys/timeb.h>
+#include <stdint.h>
 #include "WProgram.h"
 
 timeb t_start;
