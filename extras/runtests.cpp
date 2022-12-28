@@ -31,6 +31,9 @@ void delay_test() {
 
 void run_tests() {
   EMUcan emucan(0x600);
+
+  cout << "RPM: " << emucan.emu_data.RPM;
+
   if (emucan.EMUcan_Status() == EMUcan_FRESH) {
     cout << "EMUcan init ok";
   } else {
