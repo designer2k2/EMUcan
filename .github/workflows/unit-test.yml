@@ -1,11 +1,11 @@
-name: run program test
+name: run unit test program
 
 on:
   - push
   - pull_request
 
 jobs:
-  run-try:
+  run-program:
     runs-on: ubuntu-latest
     
     steps:
