@@ -1,5 +1,5 @@
 #include <time.h>
-#include "mock_arduino.h"
+#include "WProgram.h"
 
 struct timespec t_start;
 unsigned long millis() {
