@@ -15,7 +15,11 @@
   # along with EMUcanT4.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstdint>
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
+#include "WProgram.h"
+#endif
 
 #ifndef _EMUcan_h
 #define _EMUcan_h
