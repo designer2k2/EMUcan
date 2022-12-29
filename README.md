@@ -3,7 +3,7 @@ ECUMaster EMU CAN Stream Reader Arduino Library
 
 It reads the EMU CAN Stream and decodes it into something useful.
 
-It also can send data to the EMU!
+This works with any CAN enabled device, MCP2515, Teensy, ESP32 and more.
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![arduino-library-badge](https://www.ardu-badge.com/badge/EMUcan.svg?)](https://www.ardu-badge.com/EMUcan) [![CI badge](https://github.com/designer2k2/EMUcan/actions/workflows/main.yml/badge.svg)](https://github.com/designer2k2/EMUcan/actions)
 
@@ -18,11 +18,10 @@ It also can send data to the EMU!
    * [Status](#status)
    * [Reading the Values](#reading-the-values)
    * [Reading Flags](#reading-flags)
-   * [Sending Data](#sending-data)
-   * [Custom Frame Receive](#custom-frame-receive)
 * [Others](#others)
    * [Different Versions](#different-versions)
    * [Support](#support)
+   * [Migrate](#migrate-from-version-below-2-or-the-emucant4)
 
 ## Installation
 
@@ -40,58 +39,51 @@ git clone https://github.com/designer2k2/EMUcan.git
 
 When installed you will also see a few examples in `File` → `Examples` → `EMUcan` menu.
 
-This library requires the following MCP2515 library:
-
-MCP2515 Library: https://github.com/autowp/arduino-mcp2515
-
 ## Setup
 
 In the EMU Black, set the CAN-Bus speed to 500 Kpbs and enable "Send EMU stream over CAN-Bus".
 
+The CAN-Bus speed can be modified, see in the examples on how to do it depending on the hardware.
+
 The EMU Stream base ID can be changed, the begin function takes this as parameter.
 
-CAN-Bus speed, and MCP2515 Clock speed can be set too, look in the examples.
 
 ## Hardware
 
-Wire up the Arduino as shown in the MCP2515 library: https://github.com/autowp/arduino-mcp2515#can-shield
+Wire up the Arduino/Teensy/ESP32/.. to the CAN Bus.
+
+For the MCP2515: https://github.com/autowp/arduino-mcp2515#can-shield
+
+For ESP32 / Teensy: Tested CAN Bus Transceiver can be found here: https://github.com/PaulStoffregen/FlexCAN
 
 # Software usage
 
 ## Initialization
 
-To create connection with the EMU Can Base (600 by default) and the MCP2515 pin number where SPI CS is connected (10 by default).
+To start the library with EMU Can Base (600 by default)
 
 ```C++
-EMUcan emucan(0x600, 10);
+EMUcan emucan(0x600);
 ```
 
-Then in the begin define the CAN Bus baudrate and the MCP2515 clock speed
-
-```C++
-emucan.begin(CAN_500KBPS, MCP_8MHZ);
-```
-
-See the MCP2515 library for available baudrates and clock speeds: https://github.com/autowp/arduino-mcp2515#initialization
+You need to set up the receiving of CAN frames, see in the examples on how to to that. And then hand over the important parts to the EMUcan library.
 
 ## Check on CAN Bus updates
 
-Call this as often as possible in the loop function:
+Call this for every received CAN frame:
 
 ```C++
-emucan.checkEMUcan();
+emucan.checkEMUcan(can_id, can_dlc, data);
 ```
 
-## Status
+Where the `can_id` is the ID from the message. `can_dlc` is the data length and `data` the actual data.
 
-The EMUcan library provides its status:
+For the MCP2515 this could look like:
 
-```C++
-enum EMUcan_STATUS {
-  EMUcan_FRESH,
-  EMUcan_RECEIVED_WITHIN_LAST_SECOND,
-  EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND,
-};
+```
+  if (mcp2515.readMessage(&canMsg) == MCP2515::ERROR_OK) {
+    emucan.checkEMUcan(canMsg.can_id, canMsg.can_dlc, canMsg.data);
+  }
 ```
 
 ## Reading the Values
@@ -108,51 +100,51 @@ see https://github.com/designer2k2/EMUcan/blob/main/src/EMUcan.h
 ```C++
 // Available data
 struct emu_data_t {
-  uint16_t RPM;  //RPM
-  uint16_t MAP;  //kPa
-  uint8_t TPS;  //%
-  int8_t IAT;  //C
-  float Batt;  //V
-  float IgnAngle;  //deg
-  float pulseWidth;  //ms
-  uint16_t Egt1;  //C
-  uint16_t Egt2;  //C
-  float dwellTime;  //ms
-  int8_t gear;  //
-  uint8_t Baro;  //kPa
-  float analogIn1;  //V
-  float analogIn2;  //V
-  float analogIn3;  //V
-  float analogIn4;  //V
-  float analogIn5;  //V
-  float analogIn6;  //V
-  int8_t emuTemp;  //C
-  float oilPressure;  //Bar
-  uint8_t oilTemperature;  //C
-  float fuelPressure;  //Bar
-  int16_t CLT;  //C
-  float flexFuelEthanolContent;  //%
-  float wboLambda;  //λ
-  uint16_t vssSpeed;  //km/h
-  float lambdaTarget;  //λ
-  uint16_t cel;  //
-  float LambdaCorrection; //%
-  uint8_t flags1; //Flags 1
-  uint8_t outflags1; //Outflags 1
-  uint8_t outflags2; //Outflags 2
-  uint8_t outflags3; //Outflags 3
-  uint8_t outflags4; //Outflags 4
-  uint8_t pwm1; //%
-  uint16_t boostTarget; //kPa
-  uint8_t pwm2; //%
-  float fuel_used; //L
-  uint8_t DSGmode; //DSG mode
-  float DBWpos; //%
-  float DBWtarget; //%
-  uint16_t TCdrpmRaw; //
-  uint16_t TCdrpm; //
-  uint8_t TCtorqueReduction; //%
-  uint8_t PitLimitTorqueReduction; //%
+  uint16_t RPM;                     //RPM
+  uint16_t MAP;                     //kPa
+  uint8_t TPS;                      //%
+  int8_t IAT;                       //C
+  float Batt;                       //V
+  float IgnAngle;                   //deg
+  float pulseWidth;                 //ms
+  uint16_t Egt1;                    //C
+  uint16_t Egt2;                    //C
+  float dwellTime;                  //ms
+  int8_t gear;                      //
+  uint8_t Baro;                     //kPa
+  float analogIn1;                  //V
+  float analogIn2;                  //V
+  float analogIn3;                  //V
+  float analogIn4;                  //V
+  float analogIn5;                  //V
+  float analogIn6;                  //V
+  int8_t emuTemp;                   //C
+  float oilPressure;                //Bar
+  uint8_t oilTemperature;           //C
+  float fuelPressure;               //Bar
+  int16_t CLT;                      //C
+  float flexFuelEthanolContent;     //%
+  float wboLambda;                  //λ
+  uint16_t vssSpeed;                //km/h
+  float lambdaTarget;               //λ
+  uint16_t cel;                     //
+  float LambdaCorrection;           //%
+  uint8_t flags1;                   //Flags 1
+  uint8_t outflags1;                //Outflags 1
+  uint8_t outflags2;                //Outflags 2
+  uint8_t outflags3;                //Outflags 3
+  uint8_t outflags4;                //Outflags 4
+  uint8_t pwm1;                     //%
+  uint16_t boostTarget;             //kPa
+  uint8_t pwm2;                     //%
+  float fuel_used;                  //L
+  uint8_t DSGmode;                  //DSG mode
+  float DBWpos;                     //%
+  float DBWtarget;                  //%
+  uint16_t TCdrpmRaw;               //
+  uint16_t TCdrpm;                  //
+  uint8_t TCtorqueReduction;        //%
+  uint8_t PitLimitTorqueReduction;  //%
 };
 ```
 
@@ -216,84 +208,48 @@ if (emucan.emu_data.cel & emucan.ERR_CLT) {
 }
 ```
 
-## Sending Data
+## Status
 
-This can be used to transmit data to the EMU Black, or any other Device on the CAN Bus.
+The EMUcan library provides its status:
 
-Example: https://github.com/designer2k2/EMUcan/blob/main/examples/EMUcanSendTest/EMUcanSendTest.ino
-
-Define a CAN Message:
 ```C++
-struct can_frame canMsg1;
+enum EMUcan_STATUS {
+  EMUcan_FRESH,
+  EMUcan_RECEIVED_WITHIN_LAST_SECOND,
+  EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND,
+};
 ```
 
-Fill the CAN Message with data:
+Reading the status:
 ```C++
-canMsg1.can_id  = 0x0F6;
-canMsg1.can_dlc = 2;
-canMsg1.data[0] = 0xFF;
-canMsg1.data[1] = 0x00;
+    if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
+      Serial.println("Data from EMU received");
+    } else {
+      Serial.println("No communication from EMU");
+    }
 ```
 
-Send the CAN Message:
-```C++
-emucan.sendFrame(&canMsg1);
-```
-
-In the EMU Black Software use this to define the receive:
-https://github.com/designer2k2/EMUcan/blob/main/examples/EMUcanSendTest/EMUBlackCANStreamExample.canstr
-
-
-## Custom Frame Receive
-
-Listening to more than just the EMU Black CAN Stream is possible. Every CAN frame can be used.
-
-The advanced example shows it: https://github.com/designer2k2/EMUcan/blob/main/examples/EMUcanAdvancedTest/EMUcanAdvancedTest.ino
-
-in Setup:
-```C++
-ReturnAllFramesFunction LetMeHaveIt = specialframefunction;
-emucan.ReturnAllFrames(LetMeHaveIt);
-```
-
-Stop the function:
-```C++
-emucan.ReturnAllFramesStop();
-```
-
-Example receive function:
-```C++
-void specialframefunction(const struct can_frame *frame) {
-  //Magic things can happen here, but dont block!
-  Serial.print(frame->can_id, HEX); // print ID
-  Serial.print(" ");
-  Serial.print(frame->can_dlc, HEX); // print DLC
-  Serial.print(" ");
-
-  for (int i = 0; i < frame->can_dlc; i++)  { // print the data
-    Serial.print(frame->data[i], HEX);
-    Serial.print(" ");
-  }
-  Serial.println();
-
-  //Toggle the onboard LED for show:
-  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-}
-```
 
 # Others
 
 This Library is tested on Arduino Nano with a MCP2515 shield at 8Mhz.
 
+Further on a Teensy4, Teensy3 and ESP32 with SN65HVD232 transceiver.
+
 The EMU Black was running Software Version 2.154.
 
 ## Different Versions
 
-For Teensy 3 or 4 use the EMUcanT4: https://github.com/designer2k2/EMUcanT4
-
 For using the ECUMaster serial stream instead of the CAN Bus use this library: https://github.com/GTO2013/EMUSerial
+
+## Migrate from version below 2, or the EMUcanT4
+
+before Version 2, or in the EMUcanT4, the CAN Bus handling was part of the EMUcan lib. Now from Version 2 onwards you have to basically set this up by yourself and handover the CAN frame into the EMUcan library. 
+
+This gives you full control over the CAN interface, it also enables this library to be run on basically every hardware.
+
+Please see in the examples on how to make this happen on MCP2515, Teensy and ESP32.
 
 ## Support
 
 Please feel free to use/extend/report bugs/request features!
-

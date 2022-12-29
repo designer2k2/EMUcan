@@ -1,0 +1,60 @@
+name: Compile Examples
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  compile-sketch-mcp2515:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Compile MCP2515 example
+        uses: arduino/compile-sketches@v1
+        with:
+          libraries: |
+            - name: autowp-mcp2515
+            - source-path: ./
+          sketch-paths: |
+            - examples/EMUcan_MCP2515/EMUcan_MCP2515.ino 
+            - examples/EMUcan_MCP2515_send/EMUcan_MCP2515_send.ino
+            
+  compile-sketch-esp32:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3 
+      - name: Compile ESP32 example
+        uses: arduino/compile-sketches@v1
+        with:
+          fqbn: esp32:esp32:esp32
+          platforms: |
+            - name: esp32:esp32
+              source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+          libraries: |
+            - source-path: ./
+          sketch-paths: |
+            - examples/EMUcan_ESP32/EMUcan_ESP32.ino
+            
+  compile-sketch-teensy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3    
+      - name: Compile Teensy example
+        uses: arduino/compile-sketches@main
+        with:
+          platforms: |
+            - name: "teensy:avr"
+              source-url: https://www.pjrc.com/teensy/td_156/package_teensy_index.json
+              version: "1.57.0"
+          fqbn: "teensy:avr:teensy40"
+          libraries: |
+            - source-path: ./ 
+          sketch-paths: |
+            - examples/EMUcan_Teensy/EMUcan_Teensy.ino
