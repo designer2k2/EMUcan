@@ -20,6 +20,7 @@ jobs:
             - source-path: ./
           sketch-paths: |
             - examples/EMUcan_MCP2515/EMUcan_MCP2515.ino 
+            - examples/EMUcan_MCP2515_send/EMUcan_MCP2515_send.ino
             
   compile-sketch-esp32:
     runs-on: ubuntu-latest
