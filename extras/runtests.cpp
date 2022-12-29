@@ -61,8 +61,8 @@ void run_tests() {
   }
 
   // Generate another frame:
-  data[8] = { 0xf0, 0x02, 0x02, 0x16, 0x25, 0x00, 0x76, 0x00 };
-  emucan.checkEMUcan(0x600, 8, data);
+  uint8_t data2[8] = { 0xf0, 0x02, 0x02, 0x16, 0x25, 0x00, 0x76, 0x00 };
+  emucan.checkEMUcan(0x600, 8, data2);
 
   // Based on the frame from above:
   if (emucan.emu_data.RPM == 752) {
