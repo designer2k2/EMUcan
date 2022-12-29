@@ -54,13 +54,39 @@ void run_tests() {
 
   // Based on the frame from above:
   if (emucan.emu_data.emuTemp == 15) {
-    cout << "EMUcan decode frame ok" << endl;
+    cout << "EMUcan decode 1st frame ok" << endl;
     cout << "emuTemp: " << std::to_string(emucan.emu_data.emuTemp) << endl;
   } else {
     throw std::runtime_error("EMUcan decode not ok.");
   }
 
-  // Sleep 2 seconds that the status drops:
+  // Generate another frame:
+  data[8] = { 0xf0, 0x02, 0x02, 0x16, 0x25, 0x00, 0x76, 0x00 };
+  emucan.checkEMUcan(0x600, 8, data);
+
+  // Based on the frame from above:
+  if (emucan.emu_data.RPM == 752) {
+    cout << "EMUcan decode 2nd frame ok" << endl;
+    cout << "RPM: " << std::to_string(emucan.emu_data.RPM) << endl;
+  } else {
+    throw std::runtime_error("EMUcan decode not ok.");
+  }
+
+  // Check the flags:
+  if (emucan.emu_data.flags1 & emucan.F_IDLE) {
+    cout << "EMUcan decode flags ok" << endl;
+  } else {
+    throw std::runtime_error("EMUcan decode flags not ok.");
+  }
+
+  // CEL should not be on:
+  if (emucan.decodeCel() == false) {
+    cout << "EMUcan CEL check ok" << endl;
+  } else {
+    throw std::runtime_error("EMUcan CEL check not ok.");
+  }
+
+  // Sleep 2 seconds so that the status drops:
   sleep(2);
 
   // Now the status has to be that something was received:
