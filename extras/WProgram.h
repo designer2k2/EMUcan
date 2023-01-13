@@ -29,4 +29,5 @@ unsigned long millis();
 
 void initialize_mock_arduino();
 
-#define F(string_literal)
+class __FlashStringHelper;
+#define F(string_literal) (reinterpret_cast<const __FlashStringHelper *>(PSTR(string_literal)))
