@@ -28,3 +28,5 @@
 unsigned long millis();
 
 void initialize_mock_arduino();
+
+#define F(string_literal)

@@ -33,10 +33,10 @@ using namespace std;
 void run_tests() {
   // Init the library:
   EMUcan emucan(0x600);
-  
+
   // Print the library version:
   cout << "EMUcan version: " << EMUCAN_LIB_VERSION << endl;
-  
+
   // Check if the init was ok, status has to be fresh:
   if (emucan.EMUcan_Status() == EMUcan_FRESH) {
     cout << "EMUcan init ok" << endl;
