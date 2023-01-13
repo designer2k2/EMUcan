@@ -24,7 +24,7 @@
 #ifndef _EMUcan_h
 #define _EMUcan_h
 
-#define EMUCAN_LIB_VERSION (F("2.0.0"))
+#define EMUCAN_LIB_VERSION (F("2.0.1"))
 
 // Available data
 struct emu_data_t {
