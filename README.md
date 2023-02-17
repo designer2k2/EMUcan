@@ -80,7 +80,7 @@ Where the `can_id` is the ID from the message. `can_dlc` is the data length and 
 
 For the MCP2515 this could look like:
 
-```
+```C++
   if (mcp2515.readMessage(&canMsg) == MCP2515::ERROR_OK) {
     emucan.checkEMUcan(canMsg.can_id, canMsg.can_dlc, canMsg.data);
   }
