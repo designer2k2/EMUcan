@@ -3,6 +3,9 @@
 // Example to be run on Arduino (Nano) with MCP2515
 // Configure the EMU Black to send the CAN Stream at 500KBPS
 
+// Hint:
+// Check the Clock on your MCP2515 Board, change MCP_8MHZ to fit.
+
 // This MCP2515 Lib is used:
 // https://github.com/autowp/arduino-mcp2515
 
@@ -33,7 +36,7 @@ void setup() {
   Serial.println("------- CAN Read ----------");
 
   mcp2515.reset();
-  mcp2515.setBitrate(CAN_500KBPS);
+  mcp2515.setBitrate(CAN_500KBPS, MCP_8MHZ);
   mcp2515.setNormalMode();
 }
 
