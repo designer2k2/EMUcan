@@ -74,6 +74,6 @@ jobs:
           fqbn: "STM32:stm32:Nucleo_144"  # DSTM32F103x6
           libraries: |
             - source-path: ./ 
-            - source-url: https://github.com/pazi88/STM32_CAN/archive/refs/heads/main.zip
+            - name: STM32_CAN
           sketch-paths: |
             - examples/EMUcan_STM32/EMUcan_STM32.ino

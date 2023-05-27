@@ -1,5 +1,5 @@
 /* Copyright (C) designer2k2 Stephan M.
-  # This file is part of EMUcanT4 <https://github.com/designer2k2/EMUcanT4>.
+  # This file is part of EMUcan <https://github.com/designer2k2/EMUcan>.
   #
   # EMUcanT4 is free software: you can redistribute it and/or modify
   # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #ifndef _EMUcan_h
 #define _EMUcan_h
 
-#define EMUCAN_LIB_VERSION (F("2.0.1"))
+#define EMUCAN_LIB_VERSION (F("2.0.2"))
 
 // Available data
 struct emu_data_t {
@@ -165,7 +165,7 @@ public:
 
   enum OUTFLAGS4 : uint8_t {
     F_FPS = (1 << 0),
-    F_CS = (1 << 1),
+    F_CF = (1 << 1),
     F_ACCLUTCH = (1 << 2),
     F_ACFAN = (1 << 3),
     F_NITROUS = (1 << 4),
