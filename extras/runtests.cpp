@@ -14,7 +14,7 @@
   # You should have received a copy of the GNU General Public License
   # along with EMUcan.  If not, see <http://www.gnu.org/licenses/>.
 
- This simulates the full live cycle of the EMUcan library.
+ This simulates the full life cycle of the EMUcan library.
  
  Based on the work from Erik Elmore: 
  https://stackoverflow.com/questions/780819/how-can-i-unit-test-arduino-code

@@ -88,7 +88,6 @@ public:
   EMUcan(const uint32_t EMUbase = 0x600);
 
   // Methods
-  void begin(const uint32_t canSpeed);
   bool checkEMUcan(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]);
   bool decodeCel();
   EMUcan_STATUS EMUcan_Status();
