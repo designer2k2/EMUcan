@@ -163,13 +163,13 @@ public:
   };
 
   enum OUTFLAGS4 : uint8_t {
-    F_FPS = (1 << 0),            //Fuel pump state
-    F_CF = (1 << 1),             //Coolant fan state
-    F_ACCLUTCH = (1 << 2),       //AC clutch state
-    F_ACFAN = (1 << 3),          //AC fan state
-    F_NITROUS = (1 << 4),        //Nitrous active
-    F_STARTER_REQ = (1 << 5),    //Starter motor request (from start / stop strategy)
-    F_BOOST_MAP_SET = (1 << 6)   //Current set of boost parameters
+    F_FPS = (1 << 0),           //Fuel pump state
+    F_CF = (1 << 1),            //Coolant fan state
+    F_ACCLUTCH = (1 << 2),      //AC clutch state
+    F_ACFAN = (1 << 3),         //AC fan state
+    F_NITROUS = (1 << 4),       //Nitrous active
+    F_STARTER_REQ = (1 << 5),   //Starter motor request (from start / stop strategy)
+    F_BOOST_MAP_SET = (1 << 6)  //Current set of boost parameters
   };
 
   // Privates
