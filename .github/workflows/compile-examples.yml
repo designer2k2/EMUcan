@@ -52,7 +52,6 @@ jobs:
           platforms: |
             - name: "teensy:avr"
               source-url: https://www.pjrc.com/teensy/td_156/package_teensy_index.json
-              version: "1.57.0"
           fqbn: "teensy:avr:teensy40"
           libraries: |
             - source-path: ./ 
