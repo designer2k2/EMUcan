@@ -161,14 +161,14 @@ if (emucan.emu_data.flags1 & emucan.F_IDLE) {
 The flags1 would contain following states:
 ```C++
 enum FLAGS1 : uint8_t {
-  F_GEARCUT = (1 << 0),
-  F_ALS = (1 << 1),
-  F_LC = (1 << 2),
-  F_IDLE = (1 << 3),
-  F_TABLE_SET = (1 << 4),
-  F_TC_INTERVENTION = (1 << 5),
-  F_PIT_LIMITER = (1 << 6),
-  F_BRAKE_SWITCH = (1 << 7)
+  F_GEARCUT = (1 << 0),          //1 - Gearcut active
+  F_ALS = (1 << 1),              //1 - ALS active
+  F_LC = (1 << 2),               //1 - Launch control active
+  F_IDLE = (1 << 3),             //1 - Is in idle state
+  F_TABLE_SET = (1 << 4),        //0 - table set 1, 1 - table set 2
+  F_TC_INTERVENTION = (1 << 5),  //1 - traction control intervention
+  F_PIT_LIMITER = (1 << 6),      //1 - Pit limiter active
+  F_BRAKE_SWITCH = (1 << 7)      //1 - Brake switch active
 };
 ```
 
@@ -186,17 +186,17 @@ Details on why the CEL is on is contained in the cel flag:
 
 ```C++
 enum ERRORFLAG : uint16_t {
-  ERR_CLT = (1 << 0),
-  ERR_IAT = (1 << 1),
-  ERR_MAP = (1 << 2),
-  ERR_WBO = (1 << 3),
-  ERR_EGT1 = (1 << 4),
-  ERR_EGT2 = (1 << 5),
-  EGT_ALARM = (1 << 6),
-  KNOCKING = (1 << 7),
-  FFSENSOR = (1 << 8),
-  ERR_DBW = (1 << 9),
-  ERR_FPR = (1 << 10)
+  ERR_CLT = (1 << 0),    //Coolant temperature sensor failed
+  ERR_IAT = (1 << 1),    //IAT sensor failed
+  ERR_MAP = (1 << 2),    //MAP sensor failed
+  ERR_WBO = (1 << 3),    //Wide band oxygen sensor failed
+  ERR_EGT1 = (1 << 4),   //EGT sensor #1 failed
+  ERR_EGT2 = (1 << 5),   //EGT sensor #2 failed
+  EGT_ALARM = (1 << 6),  //EGT too high
+  KNOCKING = (1 << 7),   //Knock detected
+  FFSENSOR = (1 << 8),   //Flex Fuel sensor failed
+  ERR_DBW = (1 << 9),    //Drive by wire failure
+  ERR_FPR = (1 << 10)    //Fuel pressure relative error
 };
 ```
 
@@ -222,11 +222,11 @@ enum EMUcan_STATUS {
 
 Reading the status:
 ```C++
-    if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
-      Serial.println("Data from EMU received");
-    } else {
-      Serial.println("No communication from EMU");
-    }
+if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
+    Serial.println("Data from EMU received");
+} else {
+    Serial.println("No communication from EMU");
+}
 ```
 
 

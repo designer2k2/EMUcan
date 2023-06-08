@@ -11,7 +11,7 @@
 		"type": "git",
 		"url": "https://github.com/designer2k2/EMUcan"
 	},
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"license": "GPL-3.0-only",
 	"frameworks": "arduino",
 	"platforms": "*",

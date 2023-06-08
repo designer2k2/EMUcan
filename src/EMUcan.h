@@ -6,13 +6,13 @@
   # the Free Software Foundation, either version 3 of the License, or
   # (at your option) any later version.
   #
-  # EMUcanT4 is distributed in the hope that it will be useful,
+  # EMUcan is distributed in the hope that it will be useful,
   # but WITHOUT ANY WARRANTY; without even the implied warranty of
   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   # GNU General Public License for more details.
   #
   # You should have received a copy of the GNU General Public License
-  # along with EMUcanT4.  If not, see <http://www.gnu.org/licenses/>.
+  # along with EMUcan.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -24,7 +24,7 @@
 #ifndef _EMUcan_h
 #define _EMUcan_h
 
-#define EMUCAN_LIB_VERSION (F("2.0.2"))
+#define EMUCAN_LIB_VERSION (F("2.0.3"))
 
 // Available data
 struct emu_data_t {
@@ -88,7 +88,6 @@ public:
   EMUcan(const uint32_t EMUbase = 0x600);
 
   // Methods
-  void begin(const uint32_t canSpeed);
   bool checkEMUcan(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]);
   bool decodeCel();
   EMUcan_STATUS EMUcan_Status();
@@ -97,17 +96,17 @@ public:
   struct emu_data_t emu_data;
 
   enum ERRORFLAG : uint16_t {
-    ERR_CLT = (1 << 0),
-    ERR_IAT = (1 << 1),
-    ERR_MAP = (1 << 2),
-    ERR_WBO = (1 << 3),
-    ERR_EGT1 = (1 << 4),
-    ERR_EGT2 = (1 << 5),
-    EGT_ALARM = (1 << 6),
-    KNOCKING = (1 << 7),
-    FFSENSOR = (1 << 8),
-    ERR_DBW = (1 << 9),
-    ERR_FPR = (1 << 10)
+    ERR_CLT = (1 << 0),    //Coolant temperature sensor failed
+    ERR_IAT = (1 << 1),    //IAT sensor failed
+    ERR_MAP = (1 << 2),    //MAP sensor failed
+    ERR_WBO = (1 << 3),    //Wide band oxygen sensor failed
+    ERR_EGT1 = (1 << 4),   //EGT sensor #1 failed
+    ERR_EGT2 = (1 << 5),   //EGT sensor #2 failed
+    EGT_ALARM = (1 << 6),  //EGT too high
+    KNOCKING = (1 << 7),   //Knock detected
+    FFSENSOR = (1 << 8),   //Flex Fuel sensor failed
+    ERR_DBW = (1 << 9),    //Drive by wire failure
+    ERR_FPR = (1 << 10)    //Fuel pressure relative error
   };
 
   static const uint16_t EFLG_ERRORMASK = ERR_CLT
@@ -120,57 +119,57 @@ public:
                                          | KNOCKING;
 
   enum FLAGS1 : uint8_t {
-    F_GEARCUT = (1 << 0),
-    F_ALS = (1 << 1),
-    F_LC = (1 << 2),
-    F_IDLE = (1 << 3),
-    F_TABLE_SET = (1 << 4),
-    F_TC_INTERVENTION = (1 << 5),
-    F_PIT_LIMITER = (1 << 6),
-    F_BRAKE_SWITCH = (1 << 7)
+    F_GEARCUT = (1 << 0),          //1 - Gearcut active
+    F_ALS = (1 << 1),              //1 - ALS active
+    F_LC = (1 << 2),               //1 - Launch control active
+    F_IDLE = (1 << 3),             //1 - Is in idle state
+    F_TABLE_SET = (1 << 4),        //0 - table set 1, 1 - table set 2
+    F_TC_INTERVENTION = (1 << 5),  //1 - traction control intervention
+    F_PIT_LIMITER = (1 << 6),      //1 - Pit limiter active
+    F_BRAKE_SWITCH = (1 << 7)      //1 - Brake switch active
   };
 
   enum OUTFLAGS1 : uint8_t {
-    F_PO1 = (1 << 0),
-    F_PO2 = (1 << 1),
-    F_PO3 = (1 << 2),
-    F_PO4 = (1 << 3),
-    F_PO5 = (1 << 4),
-    F_VPO1 = (1 << 5),
-    F_VPO2 = (1 << 6),
-    F_VPO3 = (1 << 7)
+    F_PO1 = (1 << 0),   //Parametric output #1 state
+    F_PO2 = (1 << 1),   //Parametric output #2 state
+    F_PO3 = (1 << 2),   //Parametric output #3 state
+    F_PO4 = (1 << 3),   //Parametric output #4 state
+    F_PO5 = (1 << 4),   //Parametric output #5 state
+    F_VPO1 = (1 << 5),  //Virtual output #1 state
+    F_VPO2 = (1 << 6),  //Virtual output #2 state
+    F_VPO3 = (1 << 7)   //Virtual output #3 state
   };
 
   enum OUTFLAGS2 : uint8_t {
-    F_CANSW1 = (1 << 0),
-    F_CANSW2 = (1 << 1),
-    F_CANSW3 = (1 << 2),
-    F_CANSW4 = (1 << 3),
-    F_CANSW5 = (1 << 4),
-    F_CANSW6 = (1 << 5),
-    F_CANSW7 = (1 << 6),
-    F_CANSW8 = (1 << 7)
+    F_CANSW1 = (1 << 0),  //CAN switch #1 state
+    F_CANSW2 = (1 << 1),  //CAN switch #2 state
+    F_CANSW3 = (1 << 2),  //CAN switch #3 state
+    F_CANSW4 = (1 << 3),  //CAN switch #4 state
+    F_CANSW5 = (1 << 4),  //CAN switch #5 state
+    F_CANSW6 = (1 << 5),  //CAN switch #6 state
+    F_CANSW7 = (1 << 6),  //CAN switch #7 state
+    F_CANSW8 = (1 << 7)   //CAN switch #8 state
   };
 
   enum OUTFLAGS3 : uint8_t {
-    F_SW1 = (1 << 0),
-    F_SW2 = (1 << 1),
-    F_SW3 = (1 << 2),
-    F_MUXSW1 = (1 << 3),
-    F_MUXSW2 = (1 << 4),
-    F_MUXSW3 = (1 << 5),
-    F_LC_MAP_SET = (1 << 6),
-    F_ALS_MAP_SET = (1 << 7)
+    F_SW1 = (1 << 0),         //Switch #1 state
+    F_SW2 = (1 << 1),         //Switch #2 state
+    F_SW3 = (1 << 2),         //Switch #2 state
+    F_MUXSW1 = (1 << 3),      //MUX switch #1 state
+    F_MUXSW2 = (1 << 4),      //MUX switch #2 state
+    F_MUXSW3 = (1 << 5),      //MUX switch #3 state
+    F_LC_MAP_SET = (1 << 6),  //Current set of launch control parameters
+    F_ALS_MAP_SET = (1 << 7)  //Current set of ALS  parameters
   };
 
   enum OUTFLAGS4 : uint8_t {
-    F_FPS = (1 << 0),
-    F_CF = (1 << 1),
-    F_ACCLUTCH = (1 << 2),
-    F_ACFAN = (1 << 3),
-    F_NITROUS = (1 << 4),
-    F_STARTER_REQ = (1 << 5),
-    F_BOOST_MAP_SET = (1 << 6),
+    F_FPS = (1 << 0),           //Fuel pump state
+    F_CF = (1 << 1),            //Coolant fan state
+    F_ACCLUTCH = (1 << 2),      //AC clutch state
+    F_ACFAN = (1 << 3),         //AC fan state
+    F_NITROUS = (1 << 4),       //Nitrous active
+    F_STARTER_REQ = (1 << 5),   //Starter motor request (from start / stop strategy)
+    F_BOOST_MAP_SET = (1 << 6)  //Current set of boost parameters
   };
 
   // Privates

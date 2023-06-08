@@ -52,7 +52,6 @@ jobs:
           platforms: |
             - name: "teensy:avr"
               source-url: https://www.pjrc.com/teensy/td_156/package_teensy_index.json
-              version: "1.57.0"
           fqbn: "teensy:avr:teensy40"
           libraries: |
             - source-path: ./ 
@@ -69,11 +68,11 @@ jobs:
         uses: arduino/compile-sketches@main
         with:
           platforms: |
-            - name: "STM32:stm32"
-              source-url: https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/master/STM32/package_stm_index.json
-          fqbn: "STM32:stm32:Nucleo_144"  # DSTM32F103x6
+            - name: "STMicroelectronics:stm32"
+              source-url: https://github.com/stm32duino/BoardManagerFiles/raw/main/package_stmicroelectronics_index.json
+          fqbn: "STMicroelectronics:stm32:Nucleo_144"  # DSTM32F103x6
           libraries: |
             - source-path: ./ 
-            - source-url: https://github.com/pazi88/STM32_CAN/archive/refs/heads/main.zip
+            - name: STM32_CAN
           sketch-paths: |
             - examples/EMUcan_STM32/EMUcan_STM32.ino
