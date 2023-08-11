@@ -76,3 +76,19 @@ jobs:
             - name: STM32_CAN
           sketch-paths: |
             - examples/EMUcan_STM32/EMUcan_STM32.ino
+            
+  compile-sketch-unor4:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Compile UNO R4 example
+        uses: arduino/compile-sketches@main
+        with:
+          fqbn: "arduino:renesas_uno:unor4wifi"
+          libraries: |
+            - source-path: ./
+          sketch-paths: |
+            - examples/EMucan_UnoR4/EMucan_UnoR4.ino 
