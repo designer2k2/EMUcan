@@ -10,7 +10,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Compile MCP2515 example
         uses: arduino/compile-sketches@main
@@ -27,7 +27,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3 
+        uses: actions/checkout@v4
       - name: Compile ESP32 example
         uses: arduino/compile-sketches@main
         with:
@@ -45,7 +45,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3    
+        uses: actions/checkout@v4
       - name: Compile Teensy example
         uses: arduino/compile-sketches@main
         with:
@@ -63,7 +63,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3    
+        uses: actions/checkout@v4
       - name: Compile STM32 example
         uses: arduino/compile-sketches@main
         with:
@@ -82,7 +82,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Compile UNO R4 example
         uses: arduino/compile-sketches@main
