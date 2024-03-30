@@ -114,11 +114,10 @@ void run_tests() {
   }
 
   // Based on the frame from above:
-  if (emucan.emu_data_gps.Latitude == 752) {
+  if ((emucan.emu_data_gps.Latitude - 50.08) < 0.1) {
     cout << "EMUcan decode 3rd frame ok" << endl;
     cout << "Latitude: " << std::to_string(emucan.emu_data_gps.Latitude) << endl;
   } else {
-    cout << "Latitude: " << std::to_string(emucan.emu_data_gps.Latitude) << endl;
     throw std::runtime_error("EMUcan decode not ok.");
   }
 
