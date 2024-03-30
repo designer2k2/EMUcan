@@ -120,7 +120,7 @@ public:
   bool decodeCel();
   EMUcan_STATUS EMUcan_Status();
   EMUcan_STATUS EMUcan_GPS_Status();
-  bool enableGPS(const uint32_t GPSbase = 0x400);
+  void enableGPS(const uint32_t GPSbase = 0x400);
 
   // Data
   struct emu_data_t emu_data;

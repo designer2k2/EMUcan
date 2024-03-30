@@ -291,7 +291,7 @@ bool EMUcan::decodeCel() {
 }
 
 
-bool EMUcan::enableGPS(const uint32_t GPSbase) {
+void EMUcan::enableGPS(const uint32_t GPSbase) {
   //Getting the base number, as set in the GPS Software
   _GPSbase = GPSbase;
   _GPSenabled = true;
