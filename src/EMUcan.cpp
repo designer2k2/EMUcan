@@ -216,16 +216,16 @@ void EMUcan::_decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) 
     //Base:
     if (can_id == _GPSbase) {
       //0-3 Latitude -90 – 90
-      emu_data_gps.Latitude = (((int32_t)data[3] << 24) + ((int32_t)data[2] << 16) + ((int16_t)data[1] << 8) + data[0])*0.0000001;
+      emu_data_gps.Latitude = (((int32_t)data[0] << 24) + ((int32_t)data[1] << 16) + ((int16_t)data[2] << 8) + data[3]) * 0.0000001;
       //4-7 Longitude -180 – 180
-      emu_data_gps.Longitude = (((int32_t)data[7] << 24) + ((int32_t)data[6] << 16) + ((int16_t)data[5] << 8) + data[4])*0.0000001;
+      emu_data_gps.Longitude = (((int32_t)data[4] << 24) + ((int32_t)data[5] << 16) + ((int16_t)data[6] << 8) + data[7]) * 0.0000001;
     }
     //Base + 1:
     if (can_id == _GPSbase + 1) {
       //0-1 Speed -1179 – 1179 km/h
-      emu_data_gps.Speed = ((data[1] << 8) + data[0]) * 0.036;
+      emu_data_gps.Speed = ((data[0] << 8) + data[1]) * 0.036;
       //2-3 Height -32768 – 32767 m above sea level
-      emu_data_gps.Height = int16_t((data[3] << 8) + data[2]);
+      emu_data_gps.Height = int16_t((data[2] << 8) + data[3]);
       //4 Noise 0-255
       emu_data_gps.Noise = data[4];
       //5 Satellites 0-72
@@ -242,24 +242,24 @@ void EMUcan::_decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) 
     //Base + 2:
     if (can_id == _GPSbase + 2) {
       //0-1 Heading motion 0 - 360°
-      emu_data_gps.Heading_motion = ((data[1] << 8) + data[0]);
+      emu_data_gps.Heading_motion = ((data[0] << 8) + data[1]);
       //2-3 Heading vehicle 0 - 360°
-      emu_data_gps.Heading_vehicle = ((data[3] << 8) + data[2]);
+      emu_data_gps.Heading_vehicle = ((data[2] << 8) + data[3]);
       //4-5 X angle rate -250 - 250°/s
-      emu_data_gps.X_angle_rate = int16_t((data[5] << 8) + data[4]) * 0.01;
+      emu_data_gps.X_angle_rate = int16_t((data[4] << 8) + data[5]) * 0.01;
       //6-7 X angle rate -250 - 250°/s
-      emu_data_gps.Y_angle_rate = int16_t((data[7] << 8) + data[6]) * 0.01;
+      emu_data_gps.Y_angle_rate = int16_t((data[6] << 8) + data[7]) * 0.01;
     }
     //Base + 3:
     if (can_id == _GPSbase + 3) {
       //0-1 Z angle rate -250 - 250°/s
-      emu_data_gps.Z_angle_rate = int16_t((data[1] << 8) + data[0]) * 0.01;
+      emu_data_gps.Z_angle_rate = int16_t((data[0] << 8) + data[1]) * 0.01;
       //2-3 X acceleration -4 - 4g
-      emu_data_gps.X_acceleration = int16_t((data[3] << 8) + data[2]) * 0.01;
+      emu_data_gps.X_acceleration = int16_t((data[2] << 8) + data[3]) * 0.01;
       //4-5 Y acceleration -4 - 4g
-      emu_data_gps.Y_acceleration = int16_t((data[5] << 8) + data[4]) * 0.01;
+      emu_data_gps.Y_acceleration = int16_t((data[4] << 8) + data[5]) * 0.01;
       //2-7 Z acceleration -4 - 4g
-      emu_data_gps.Z_acceleration = int16_t((data[7] << 8) + data[6]) * 0.01;
+      emu_data_gps.Z_acceleration = int16_t((data[6] << 8) + data[7]) * 0.01;
     }
     //Base + 4:
     if (can_id == _GPSbase + 4) {
@@ -276,7 +276,7 @@ void EMUcan::_decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) 
       //5 UTC second
       emu_data_gps.UTC_second = data[5];
       //6-7 UTC millisecond
-      emu_data_gps.UTC_millisecond = ((data[7] << 8) + data[6]) * (1000 / 65536);
+      emu_data_gps.UTC_millisecond = ((data[6] << 8) + data[7]) * (1000 / 65536);
     }
   }
 }
