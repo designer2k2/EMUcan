@@ -119,6 +119,7 @@ public:
   bool checkEMUcan(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]);
   bool decodeCel();
   EMUcan_STATUS EMUcan_Status();
+  EMUcan_STATUS EMUcan_GPS_Status();
   bool enableGPS(const uint32_t GPSbase = 0x400);
 
   // Data
@@ -206,7 +207,7 @@ public:
 private:
 
   enum EMUcan_STATUS _EMUcan_Status = EMUcan_FRESH;
-  enum EMUcanGPS_STATUS _EMUcanGPS_Status = EMUcan_FRESH;
+  enum EMUcan_STATUS _EMUcanGPS_Status = EMUcan_FRESH;
 
   enum EMU_STATUS_UPDATES {
     EMU_MESSAGE_RECEIVED_VALID,
