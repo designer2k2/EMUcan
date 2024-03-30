@@ -216,9 +216,9 @@ void EMUcan::_decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) 
     //Base:
     if (can_id == _GPSbase) {
       //0-3 Latitude -90 – 90
-      emu_data_gps.Latitude = ((data[3] << 24) + (data[2] << 16) + (data[1] << 8) + data[0]) / 10 ^ 7;
+      emu_data_gps.Latitude = (((int32_t)data[3] << 24) + ((int32_t)data[2] << 16) + ((int16_t)data[1] << 8) + data[0])*0.0000001;
       //4-7 Longitude -180 – 180
-      emu_data_gps.Longitude = ((data[7] << 24) + (data[6] << 16) + (data[5] << 8) + data[4]) / 10 ^ 7;
+      emu_data_gps.Longitude = (((int32_t)data[7] << 24) + ((int32_t)data[6] << 16) + ((int16_t)data[5] << 8) + data[4])*0.0000001;
     }
     //Base + 1:
     if (can_id == _GPSbase + 1) {
