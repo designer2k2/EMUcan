@@ -36,7 +36,20 @@ bool EMUcan::checkEMUcan(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) {
     return true;
   } else {
     _emucanstatusEngine(EMU_RECEIVED_NOTHING);
-    return false;
+    if (_GPSenabled == true) {
+      if (can_id >= _GPSbase && can_id <= _GPSbase + 4) {
+        //So messages here should be decoded!
+        _decodeEmuFrame(can_id, can_dlc, data);
+        //Store the event:
+        _emucanstatusEngineGPS(EMU_MESSAGE_RECEIVED_VALID);
+        return true;
+      } else {
+        _emucanstatusEngineGPS(EMU_RECEIVED_NOTHING);
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 }
 
@@ -58,9 +71,32 @@ void EMUcan::_emucanstatusEngine(const EMU_STATUS_UPDATES action) {
   }
 }
 
+void EMUcan::_emucanstatusEngineGPS(const EMU_STATUS_UPDATES action) {
+  //check the current time versus the last to define the status.
+  unsigned long currentMillis = millis();
+  switch (action) {
+    case EMU_RECEIVED_NOTHING:
+      if (currentMillis - _previousGPSMillis >= 1000) {
+        _EMUcanGPS_Status = EMUcan_RECEIVED_NOTHING_WITHIN_LAST_SECOND;
+      }
+      break;
+    case EMU_MESSAGE_RECEIVED_VALID:
+      _previousGPSMillis = currentMillis;
+      _EMUcanGPS_Status = EMUcan_RECEIVED_WITHIN_LAST_SECOND;
+      break;
+    default:
+      break;
+  }
+}
+
 EMUcan_STATUS EMUcan::EMUcan_Status() {
   _emucanstatusEngine(EMU_RECEIVED_NOTHING);
   return _EMUcan_Status;
+}
+
+EMUcan_STATUS EMUcan::EMUcan_GPS_Status() {
+  _emucanstatusEngineGPS(EMU_RECEIVED_NOTHING);
+  return _EMUcanGPS_Status;
 }
 
 void EMUcan::_decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) {
@@ -175,6 +211,74 @@ void EMUcan::_decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]) 
       emu_data.fuel_used = ((data[7] << 8) + data[6]) * 0.01;
     }
   }
+
+  if (_GPSenabled == true) {
+    //Base:
+    if (can_id == _GPSbase) {
+      //0-3 Latitude -90 – 90
+      emu_data_gps.Latitude = ((data[3] << 24) + (data[2] << 16) + (data[1] << 8) + data[0]) / 10 ^ 7;
+      //4-7 Longitude -180 – 180
+      emu_data_gps.Longitude = ((data[7] << 24) + (data[6] << 16) + (data[5] << 8) + data[4]) / 10 ^ 7;
+    }
+    //Base + 1:
+    if (can_id == _GPSbase + 1) {
+      //0-1 Speed -1179 – 1179 km/h
+      emu_data_gps.Speed = ((data[1] << 8) + data[0]) * 0.036;
+      //2-3 Height -32768 – 32767 m above sea level
+      emu_data_gps.Height = int16_t((data[3] << 8) + data[2]);
+      //4 Noise 0-255
+      emu_data_gps.Noise = data[4];
+      //5 Satellites 0-72
+      emu_data_gps.Satellites = data[5];
+      //6 (0) GPS frame index 0-16
+      emu_data_gps.GPS_frame_index = data[6] & 0xF;
+      //6 (4) Empty  frame index 0-16
+      emu_data_gps.Empty_frame_index = data[6] >> 4;
+      //7 (0) GPS status 1-5
+      emu_data_gps.GPS_status = data[7] & 0x7;
+      //7 (3) IMU fusion status 0-4
+      emu_data_gps.IMU_fusion_status = (data[7] >> 3) & 0x7;
+    }
+    //Base + 2:
+    if (can_id == _GPSbase + 2) {
+      //0-1 Heading motion 0 - 360°
+      emu_data_gps.Heading_motion = ((data[1] << 8) + data[0]);
+      //2-3 Heading vehicle 0 - 360°
+      emu_data_gps.Heading_vehicle = ((data[3] << 8) + data[2]);
+      //4-5 X angle rate -250 - 250°/s
+      emu_data_gps.X_angle_rate = int16_t((data[5] << 8) + data[4]) * 0.01;
+      //6-7 X angle rate -250 - 250°/s
+      emu_data_gps.Y_angle_rate = int16_t((data[7] << 8) + data[6]) * 0.01;
+    }
+    //Base + 3:
+    if (can_id == _GPSbase + 3) {
+      //0-1 Z angle rate -250 - 250°/s
+      emu_data_gps.Z_angle_rate = int16_t((data[1] << 8) + data[0]) * 0.01;
+      //2-3 X acceleration -4 - 4g
+      emu_data_gps.X_acceleration = int16_t((data[3] << 8) + data[2]) * 0.01;
+      //4-5 Y acceleration -4 - 4g
+      emu_data_gps.Y_acceleration = int16_t((data[5] << 8) + data[4]) * 0.01;
+      //2-7 Z acceleration -4 - 4g
+      emu_data_gps.Z_acceleration = int16_t((data[7] << 8) + data[6]) * 0.01;
+    }
+    //Base + 4:
+    if (can_id == _GPSbase + 4) {
+      //0 UTC year
+      emu_data_gps.UTC_year = data[0] + 2000;
+      //1 UTC month
+      emu_data_gps.UTC_month = data[1];
+      //2 UTC day
+      emu_data_gps.UTC_day = data[2];
+      //3 UTC hour
+      emu_data_gps.UTC_hour = data[3];
+      //4 UTC minute
+      emu_data_gps.UTC_minute = data[4];
+      //5 UTC second
+      emu_data_gps.UTC_second = data[5];
+      //6-7 UTC millisecond
+      emu_data_gps.UTC_millisecond = ((data[7] << 8) + data[6]) * (1000 / 65536);
+    }
+  }
 }
 
 bool EMUcan::decodeCel() {
@@ -184,4 +288,11 @@ bool EMUcan::decodeCel() {
   } else {
     return false;
   }
+}
+
+
+bool EMUcan::enableGPS(const uint32_t GPSbase) {
+  //Getting the base number, as set in the GPS Software
+  _GPSbase = GPSbase;
+  _GPSenabled = true;
 }

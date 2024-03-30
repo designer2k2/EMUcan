@@ -24,7 +24,7 @@
 #ifndef _EMUcan_h
 #define _EMUcan_h
 
-#define EMUCAN_LIB_VERSION (F("2.0.3"))
+#define EMUCAN_LIB_VERSION (F("2.1.0"))
 
 // Available data
 struct emu_data_t {
@@ -75,6 +75,34 @@ struct emu_data_t {
   uint8_t PitLimitTorqueReduction;  //%
 };
 
+struct emu_data_gps_t {
+  float Latitude;             //Degree
+  float Longitude;            //Degree
+  float Speed;                //km/h
+  uint16_t Height;            //m
+  uint8_t Noise;              //
+  uint8_t Satellites;         //
+  uint8_t GPS_frame_index;    //
+  uint8_t Empty_frame_index;  //
+  uint8_t GPS_status;         //
+  uint8_t IMU_fusion_status;  //
+  uint16_t Heading_motion;    //°
+  uint16_t Heading_vehicle;   //°
+  int16_t X_angle_rate;       //°/s
+  int16_t Y_angle_rate;       //°/s
+  int16_t Z_angle_rate;       //°/s
+  int16_t X_acceleration;     //g
+  int16_t Y_acceleration;     //g
+  int16_t Z_acceleration;     //g
+  uint16_t UTC_year;          //
+  uint8_t UTC_month;          //
+  uint8_t UTC_day;            //
+  uint8_t UTC_hour;           //
+  uint8_t UTC_minute;         //
+  uint8_t UTC_second;         //
+  uint16_t UTC_millisecond;   //
+};
+
 enum EMUcan_STATUS {
   EMUcan_FRESH,
   EMUcan_RECEIVED_WITHIN_LAST_SECOND,
@@ -91,9 +119,11 @@ public:
   bool checkEMUcan(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]);
   bool decodeCel();
   EMUcan_STATUS EMUcan_Status();
+  bool enableGPS(const uint32_t GPSbase = 0x400);
 
   // Data
   struct emu_data_t emu_data;
+  struct emu_data_gps_t emu_data_gps;
 
   enum ERRORFLAG : uint16_t {
     ERR_CLT = (1 << 0),    //Coolant temperature sensor failed
@@ -176,6 +206,7 @@ public:
 private:
 
   enum EMUcan_STATUS _EMUcan_Status = EMUcan_FRESH;
+  enum EMUcanGPS_STATUS _EMUcanGPS_Status = EMUcan_FRESH;
 
   enum EMU_STATUS_UPDATES {
     EMU_MESSAGE_RECEIVED_VALID,
@@ -183,9 +214,16 @@ private:
   };
 
   void _decodeEmuFrame(uint32_t can_id, uint8_t can_dlc, uint8_t data[8]);
+
   void _emucanstatusEngine(const EMU_STATUS_UPDATES action);
+  void _emucanstatusEngineGPS(const EMU_STATUS_UPDATES action);
 
   uint32_t _EMUbase;
+  uint32_t _GPSbase;
+
+  bool _GPSenabled = false;
+
   unsigned long _previousMillis = 0;
+  unsigned long _previousGPSMillis = 0;
 };
 #endif

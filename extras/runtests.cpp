@@ -98,6 +98,29 @@ void run_tests() {
   } else {
     throw std::runtime_error("EMUcan status update not ok.");
   }
+  
+  // Enable GPS:
+  emucan.enableGPS(0x400);
+  
+  // Generate GPS frame:
+  uint8_t data2[8] = { 0x1d, 0xd9, 0x43, 0xb0, 0x0b, 0xdc, 0xa0, 0x42 };
+  emucan.checkEMUcan(0x400, 8, data2);
+  
+  // Now the status has to be that something was received:
+  if (emucan.EMUcan_GPS_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
+    cout << "EMUcan GPS status update ok" << endl;
+  } else {
+    throw std::runtime_error("EMUcan GPS status update not ok.");
+  }
+  
+  // Based on the frame from above:
+  if (emucan.emu_data_gps.Latitude == 752) {
+    cout << "EMUcan decode 3nd frame ok" << endl;
+    cout << "Latitude: " << std::to_string(emu_data_gps.Latitude) << endl;
+  } else {
+	cout << "Latitude: " << std::to_string(emu_data_gps.Latitude) << endl;
+    throw std::runtime_error("EMUcan decode not ok.");
+  }
 
   cout << "EMUcan check complete, all ok." << endl;
 }
