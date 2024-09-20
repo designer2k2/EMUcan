@@ -4,7 +4,7 @@
 const int SPI_CS_PIN = 10;
 MCP2515 mcp2515(SPI_CS_PIN);
 
-// Tablice z przykładowymi wartościami
+// Tables with sample values
 uint16_t rpms[] = { 0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000 };
 uint8_t tps[] = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
 int8_t iat[] = { -40, -20, 0, 20, 40, 60, 80, 100, 120 };
@@ -19,7 +19,7 @@ float fuelPressure[] = { 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0 };
 int16_t clt[] = { -40, -20, 0, 20, 40, 60, 80, 100, 120, 130 };
 int8_t ignAngle[] = { -60, -30, 0, 30, 60 };
 float dwellTime[] = { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
-float lambda[] = { 0.6, 0.7, 0.8, 0.9 , 1.0 , 1.1, 1.2};
+float lambda[] = { 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2 };
 float lambdaCorrection[] = { 75, 80, 85, 90, 95, 100, 105, 110, 115, 120 };
 uint16_t egt1[] = { 0, 200, 400, 600, 800, 1000, 1200, 1400 };
 uint16_t egt2[] = { 0, 200, 400, 600, 800, 1000, 1200, 1400 };
@@ -65,7 +65,7 @@ void loop() {
     int8_t iat_value = iat[i % 9];
     uint16_t map_value = maps[i % 7];
     uint16_t pulseWidth_value = pulseWidth[i % 10];
-    
+
     canMsg1.data[0] = rpm_value & 0xFF;
     canMsg1.data[1] = (rpm_value >> 8) & 0xFF;
     canMsg1.data[2] = tps_value;
