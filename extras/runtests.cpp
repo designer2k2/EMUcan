@@ -20,16 +20,17 @@
  https://stackoverflow.com/questions/780819/how-can-i-unit-test-arduino-code
 */
 
-#include <iostream>
-#include <stdexcept>
-#include <string>
 #include <unistd.h>
+#include <stdexcept>
+#include <iostream>
+#include <string>
 
 #include "EMUcan.h"
 #include "WProgram.h"
 
 void run_tests() {
   using std::cout;
+  using std::endl;
 
   // Init the library:
   EMUcan emucan(0x600);
