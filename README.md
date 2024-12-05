@@ -1,4 +1,5 @@
 # EMUcan
+
 ECUMaster EMU CAN Stream Reader Arduino Library
 
 It reads the EMU CAN Stream and decodes it into something useful.
@@ -9,19 +10,19 @@ This works with any CAN enabled device, MCP2515, Teensy, ESP32, STM32, Arduino U
 
 **Content:**
 
-* [Installation](#installation)
-* [Setup](#setup)
-* [Hardware](#hardware)
-* [Software usage](#software-usage)
-  * [Initialization](#initialization)
-  * [Check on CAN Bus updates](#check-on-can-bus-updates)
-  * [Status](#status)
-  * [Reading the Values](#reading-the-values)
-  * [Reading Flags](#reading-flags)
-* [Others](#others)
-  * [Different Versions](#different-versions)
-  * [Support](#support)
-  * [Migrate](#migrate-from-version-below-2-or-the-emucant4)
+- [Installation](#installation)
+- [Setup](#setup)
+- [Hardware](#hardware)
+- [Software usage](#software-usage)
+  - [Initialization](#initialization)
+  - [Check on CAN Bus updates](#check-on-can-bus-updates)
+  - [Status](#status)
+  - [Reading the Values](#reading-the-values)
+  - [Reading Flags](#reading-flags)
+- [Others](#others)
+  - [Different Versions](#different-versions)
+  - [Support](#support)
+  - [Migrate](#migrate-from-version-below-2-or-the-emucant4)
 
 ## Installation
 
@@ -46,7 +47,6 @@ In the EMU Black, set the CAN-Bus speed to 500 Kpbs and enable "Send EMU stream 
 The CAN-Bus speed can be modified, see in the examples on how to do it depending on the hardware.
 
 The EMU Stream base ID can be changed, the begin function takes this as parameter.
-
 
 ## Hardware
 
@@ -91,6 +91,7 @@ For the MCP2515 this could look like:
 ### Reading the Values
 
 Example on how to read a value:
+
 ```C++
 Serial.println(emucan.emu_data.RPM);
 ```
@@ -161,6 +162,7 @@ if (emucan.emu_data.flags1 & emucan.F_IDLE) {
 ```
 
 The flags1 would contain following states:
+
 ```C++
 enum FLAGS1 : uint8_t {
   F_GEARCUT = (1 << 0),          //1 - Gearcut active
@@ -223,6 +225,7 @@ enum EMUcan_STATUS {
 ```
 
 Reading the status:
+
 ```C++
 if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
     Serial.println("Data from EMU received");
@@ -230,7 +233,6 @@ if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
     Serial.println("No communication from EMU");
 }
 ```
-
 
 ## Others
 
