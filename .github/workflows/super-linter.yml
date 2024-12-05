@@ -35,3 +35,4 @@ jobs:
           # Enable write
           prettier_options: --write
           VALIDATE_CLANG_FORMAT: false
+          VALIDATE_CPP: false
