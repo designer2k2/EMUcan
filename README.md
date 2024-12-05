@@ -13,15 +13,15 @@ This works with any CAN enabled device, MCP2515, Teensy, ESP32, STM32, Arduino U
 * [Setup](#setup)
 * [Hardware](#hardware)
 * [Software usage](#software-usage)
-   * [Initialization](#initialization)
-   * [Check on CAN Bus updates](#check-on-can-bus-updates)
-   * [Status](#status)
-   * [Reading the Values](#reading-the-values)
-   * [Reading Flags](#reading-flags)
+  * [Initialization](#initialization)
+  * [Check on CAN Bus updates](#check-on-can-bus-updates)
+  * [Status](#status)
+  * [Reading the Values](#reading-the-values)
+  * [Reading Flags](#reading-flags)
 * [Others](#others)
-   * [Different Versions](#different-versions)
-   * [Support](#support)
-   * [Migrate](#migrate-from-version-below-2-or-the-emucant4)
+  * [Different Versions](#different-versions)
+  * [Support](#support)
+  * [Migrate](#migrate-from-version-below-2-or-the-emucant4)
 
 ## Installation
 
@@ -29,7 +29,7 @@ To install EMUcan into your Arduino IDE you can use the Library Manager (availab
 
 Or alternatively install it as ZIP file:
 
-[Download](https://github.com/designer2k2/EMUcan/archive/main.zip) the zip file from our [repository](https://github.com/designer2k2/EMUcan/) and select in Arduino IDE `Sketch` → `Include library` → `Add .ZIP library...`.
+[Download](https://github.com/designer2k2/EMUcan/archive/main.zip) the ZIP file from our [repository](https://github.com/designer2k2/EMUcan/) and select in Arduino IDE `Sketch` → `Include library` → `Add .ZIP library...`.
 
 Or clone it into your `Documents/Arduino/libraries` folder:
 
@@ -52,11 +52,11 @@ The EMU Stream base ID can be changed, the begin function takes this as paramete
 
 Wire up the Arduino/Teensy/ESP32/.. to the CAN Bus.
 
-For the MCP2515: https://github.com/autowp/arduino-mcp2515#can-shield
+For the MCP2515: [Arduino-MCP2515](https://github.com/autowp/arduino-mcp2515#can-shield)
 
-For ESP32 / Teensy: Tested CAN Bus Transceiver can be found here: https://github.com/PaulStoffregen/FlexCAN
+For ESP32 / Teensy: Tested CAN Bus Transceiver can be found here: [FlexCAN](https://github.com/PaulStoffregen/FlexCAN)
 
-For the Arduino UNO R4 see the official Documentation: https://docs.arduino.cc/tutorials/uno-r4-wifi/can
+For the Arduino UNO R4 see the official Documentation: [R4 CAN](https://docs.arduino.cc/tutorials/uno-r4-wifi/can)
 
 # Software usage
 
@@ -97,7 +97,7 @@ Serial.println(emucan.emu_data.RPM);
 
 All the values:
 
-see https://github.com/designer2k2/EMUcan/blob/main/src/EMUcan.h
+see [Emucan.h](https://github.com/designer2k2/EMUcan/blob/main/src/EMUcan.h)
 
 ```C++
 // Available data
@@ -174,7 +174,7 @@ enum FLAGS1 : uint8_t {
 };
 ```
 
-There are many more registers, take a look at https://github.com/designer2k2/EMUcan/blob/main/src/EMUcan.h 
+There are many more registers, take a look at [EMUcan.h](https://github.com/designer2k2/EMUcan/blob/main/src/EMUcan.h)
 
 The information if the CEL is on can be checked by a dedicated function:
 
@@ -242,11 +242,11 @@ The EMU Black was running Software Version 2.154.
 
 ## Different Versions
 
-For using the ECUMaster serial stream instead of the CAN Bus use this library: https://github.com/GTO2013/EMUSerial
+For using the ECUMaster serial stream instead of the CAN Bus use this library: [EMUSerial](https://github.com/GTO2013/EMUSerial)
 
 ## Migrate from version below 2, or the EMUcanT4
 
-before Version 2, or in the EMUcanT4, the CAN Bus handling was part of the EMUcan lib. Now from Version 2 onwards you have to basically set this up by yourself and handover the CAN frame into the EMUcan library. 
+before Version 2, or in the EMUcanT4, the CAN Bus handling was part of the EMUcan lib. Now from Version 2 onwards you have to basically set this up by yourself and handover the CAN frame into the EMUcan library.
 
 This gives you full control over the CAN interface, it also enables this library to be run on basically every hardware.
 
