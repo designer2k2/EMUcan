@@ -1,17 +1,19 @@
+---
 name: Compile Examples
 
 on:
   - push
   - pull_request
+permissions: {}
 
 jobs:
   compile-sketch-mcp2515:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Compile MCP2515 example
         uses: arduino/compile-sketches@main
         with:
@@ -22,13 +24,13 @@ jobs:
             - examples/EMUcan_MCP2515/EMUcan_MCP2515.ino 
             - examples/EMUcan_MCP2515_send/EMUcan_MCP2515_send.ino
             - examples/EMUcan_Simulator/EMUcan_Simulator.ino
-            
+
   compile-sketch-esp32:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v4
       - name: Compile ESP32 example
         uses: arduino/compile-sketches@main
         with:
@@ -40,13 +42,13 @@ jobs:
             - source-path: ./
           sketch-paths: |
             - examples/EMUcan_ESP32/EMUcan_ESP32.ino
-            
+
   compile-sketch-teensy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4    
+        uses: actions/checkout@v4
       - name: Compile Teensy example
         uses: arduino/compile-sketches@main
         with:
@@ -55,36 +57,36 @@ jobs:
               source-url: https://www.pjrc.com/teensy/td_156/package_teensy_index.json
           fqbn: "teensy:avr:teensy40"
           libraries: |
-            - source-path: ./ 
+            - source-path: ./
           sketch-paths: |
             - examples/EMUcan_Teensy/EMUcan_Teensy.ino
-            
+
   compile-sketch-stm32:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4    
+        uses: actions/checkout@v4
       - name: Compile STM32 example
         uses: arduino/compile-sketches@main
         with:
           platforms: |
             - name: "STMicroelectronics:stm32"
               source-url: https://github.com/stm32duino/BoardManagerFiles/raw/main/package_stmicroelectronics_index.json
-          fqbn: "STMicroelectronics:stm32:Nucleo_144"  # DSTM32F103x6
+          fqbn: "STMicroelectronics:stm32:Nucleo_144" # DSTM32F103x6
           libraries: |
             - source-path: ./ 
             - name: STM32_CAN
           sketch-paths: |
             - examples/EMUcan_STM32/EMUcan_STM32.ino
-            
+
   compile-sketch-unor4:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Compile UNO R4 example
         uses: arduino/compile-sketches@main
         with:
@@ -92,4 +94,4 @@ jobs:
           libraries: |
             - source-path: ./
           sketch-paths: |
-            - examples/EMucan_UnoR4/EMucan_UnoR4.ino 
+            - examples/EMucan_UnoR4/EMucan_UnoR4.ino
