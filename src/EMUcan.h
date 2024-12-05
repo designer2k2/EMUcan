@@ -82,7 +82,7 @@ enum EMUcan_STATUS {
 };
 
 class EMUcan {
- public:
+public:
   // Constructor
   EMUcan(const uint32_t EMUbase = 0x600);
 
@@ -172,7 +172,7 @@ class EMUcan {
   };
 
   // Privates
- private:
+private:
   enum EMUcan_STATUS _EMUcan_Status = EMUcan_FRESH;
 
   enum EMU_STATUS_UPDATES {
