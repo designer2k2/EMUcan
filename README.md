@@ -6,7 +6,7 @@ It reads the EMU CAN Stream and decodes it into something useful.
 
 This works with any CAN enabled device, MCP2515, Teensy, ESP32, STM32, Arduino UNO R4 and more.
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![arduino-library-badge](https://www.ardu-badge.com/badge/EMUcan.svg?)](https://www.ardu-badge.com/EMUcan) [![CI badge](https://github.com/designer2k2/EMUcan/actions/workflows/compile-examples.yml/badge.svg)](https://github.com/designer2k2/EMUcan/actions) [![CI badge](https://github.com/designer2k2/EMUcan/actions/workflows/unit-test.yml/badge.svg)](https://github.com/designer2k2/EMUcan/actions)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![arduino-library-badge](https://www.ardu-badge.com/badge/EMUcan.svg?)](https://www.ardu-badge.com/EMUcan) [![CI badge](https://github.com/designer2k2/EMUcan/actions/workflows/compile-examples.yml/badge.svg)](https://github.com/designer2k2/EMUcan/actions) [![CI badge](https://github.com/designer2k2/EMUcan/actions/workflows/unit-test.yml/badge.svg)](https://github.com/designer2k2/EMUcan/actions) [![Super-Linter](https://github.com/designer2k2/EMUcan/actions/workflows/super-linter.yml/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
 **Content:**
 

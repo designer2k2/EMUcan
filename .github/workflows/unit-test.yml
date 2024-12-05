@@ -1,5 +1,5 @@
 ---
-name: run unit test program
+name: unit test program
 
 on:
   - push
