@@ -22,7 +22,7 @@
 
 
 EMUcan::EMUcan(const uint32_t EMUbase) {
-  //Getting the base number, as set in the EMU Software
+  // Getting the base number, as set in the EMU Software
   _EMUbase = EMUbase;
 }
 
