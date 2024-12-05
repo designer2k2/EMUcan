@@ -15,22 +15,22 @@
   # along with EMUcan.  If not, see <http://www.gnu.org/licenses/>.
 
  This simulates the full life cycle of the EMUcan library.
- 
- Based on the work from Erik Elmore: 
+
+ Based on the work from Erik Elmore:
  https://stackoverflow.com/questions/780819/how-can-i-unit-test-arduino-code
 */
 
-#include <unistd.h>
-#include <stdexcept>
 #include <iostream>
+#include <stdexcept>
 #include <string>
+#include <unistd.h>
 
-#include "WProgram.h"
 #include "EMUcan.h"
-
-using namespace std;
+#include "WProgram.h"
 
 void run_tests() {
+  using std::cout;
+
   // Init the library:
   EMUcan emucan(0x600);
 
@@ -45,7 +45,7 @@ void run_tests() {
   }
 
   // Generate a can frame and hand it over:
-  uint8_t data[8] = { 0x00, 0x0f, 0x13, 0x02, 0x00, 0x00, 0x08, 0x00 };
+  uint8_t data[8] = {0x00, 0x0f, 0x13, 0x02, 0x00, 0x00, 0x08, 0x00};
   emucan.checkEMUcan(0x604, 8, data);
 
   // Now the status has to be that something was received:
@@ -64,7 +64,7 @@ void run_tests() {
   }
 
   // Generate another frame:
-  uint8_t data2[8] = { 0xf0, 0x02, 0x02, 0x16, 0x25, 0x00, 0x76, 0x00 };
+  uint8_t data2[8] = {0xf0, 0x02, 0x02, 0x16, 0x25, 0x00, 0x76, 0x00};
   emucan.checkEMUcan(0x600, 8, data2);
 
   // Based on the frame from above:
