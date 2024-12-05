@@ -25,7 +25,7 @@
 
 #pragma once
 
-unsigned long millis();
+uint32_t millis();
 
 void initialize_mock_arduino();
 

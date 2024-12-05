@@ -15,8 +15,8 @@
   # along with EMUcan.  If not, see <http://www.gnu.org/licenses/>.
 
  This simulates the full life cycle of the EMUcan library.
- 
- Based on the work from Erik Elmore: 
+
+ Based on the work from Erik Elmore:
  https://stackoverflow.com/questions/780819/how-can-i-unit-test-arduino-code
 */
 
@@ -25,12 +25,13 @@
 #include <iostream>
 #include <string>
 
-#include "WProgram.h"
 #include "EMUcan.h"
-
-using namespace std;
+#include "WProgram.h"
 
 void run_tests() {
+  using std::cout;
+  using std::endl;
+
   // Init the library:
   EMUcan emucan(0x600);
 

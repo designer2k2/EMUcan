@@ -1,22 +1,24 @@
-name: run unit test program
+---
+name: unit test program
 
 on:
   - push
   - pull_request
+permissions: {}
 
 jobs:
   run-program:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout this repo
-      uses: actions/checkout@v4
-    
-    - name: Build the test
-      run: |
-        g++ --version
-        g++ -Wextra -Wall extras/*.cpp src/*.cpp -I./extras -I./src
-        
-    - name: Run the test
-      run: |
-        ./a.out
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Build the test
+        run: |
+          g++ --version
+          g++ -Wextra -Wall extras/*.cpp src/*.cpp -I./extras -I./src
+
+      - name: Run the test
+        run: |
+          ./a.out

@@ -25,7 +25,7 @@
 #include "WProgram.h"
 
 struct timespec t_start;
-unsigned long millis() {
+uint32_t millis() {
   struct timespec t_now;
   clock_gettime(CLOCK_MONOTONIC_RAW, &t_now);
   return (t_now.tv_sec - t_start.tv_sec) * 1000 + (t_now.tv_nsec - t_start.tv_nsec) / 1000000;
