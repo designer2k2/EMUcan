@@ -58,9 +58,9 @@ For ESP32 / Teensy: Tested CAN Bus Transceiver can be found here: [FlexCAN](http
 
 For the Arduino UNO R4 see the official Documentation: [R4 CAN](https://docs.arduino.cc/tutorials/uno-r4-wifi/can)
 
-# Software usage
+## Software usage
 
-## Initialization
+### Initialization
 
 To start the library with EMU Can Base (600 by default)
 
@@ -70,7 +70,7 @@ EMUcan emucan(0x600);
 
 You need to set up the receiving of CAN frames, see in the examples on how to to that. And then hand over the important parts to the EMUcan library.
 
-## Check on CAN Bus updates
+### Check on CAN Bus updates
 
 Call this for every received CAN frame:
 
@@ -88,7 +88,7 @@ For the MCP2515 this could look like:
   }
 ```
 
-## Reading the Values
+### Reading the Values
 
 Example on how to read a value:
 ```C++
@@ -150,7 +150,7 @@ struct emu_data_t {
 };
 ```
 
-## Reading Flags
+### Reading Flags
 
 Example on how to check if the Engine is currently in idle:
 
@@ -210,7 +210,7 @@ if (emucan.emu_data.cel & emucan.ERR_CLT) {
 }
 ```
 
-## Status
+### Status
 
 The EMUcan library provides its status:
 
@@ -232,7 +232,7 @@ if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
 ```
 
 
-# Others
+## Others
 
 This Library is tested on Arduino Nano with a MCP2515 shield at 8Mhz.
 
@@ -240,11 +240,11 @@ Further on a Teensy4, Teensy3 and ESP32 with SN65HVD232 transceiver.
 
 The EMU Black was running Software Version 2.154.
 
-## Different Versions
+### Different Versions
 
 For using the ECUMaster serial stream instead of the CAN Bus use this library: [EMUSerial](https://github.com/GTO2013/EMUSerial)
 
-## Migrate from version below 2, or the EMUcanT4
+### Migrate from version below 2, or the EMUcanT4
 
 before Version 2, or in the EMUcanT4, the CAN Bus handling was part of the EMUcan lib. Now from Version 2 onwards you have to basically set this up by yourself and handover the CAN frame into the EMUcan library.
 
@@ -252,6 +252,6 @@ This gives you full control over the CAN interface, it also enables this library
 
 Please see in the examples on how to make this happen on MCP2515, Teensy and ESP32.
 
-## Support
+### Support
 
 Please feel free to use/extend/report bugs/request features!
