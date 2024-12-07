@@ -260,5 +260,5 @@ Please see in the examples on how to make this happen on MCP2515, Teensy and ESP
 
 ### Support
 
-Please feel free to use/extend/report bugs/request features! 
-Take a look at the [Contribution Documents](hhttps://github.dev/designer2k2/EMUcan/blob/main/CONTRIBUTING.md) to see how to it.
+Please feel free to use/extend/report bugs/request features!
+Take a look at the [Contribution Documents](https://github.dev/designer2k2/EMUcan/blob/main/CONTRIBUTING.md) to see how to it.
