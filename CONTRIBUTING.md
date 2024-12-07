@@ -14,7 +14,7 @@
 
 ## **Do you intend to add a new feature or change an existing one?**
 
-* Open a New Issue and describe it. 
+* Open a New Issue and describe it.
 
 * If you have the code ready, open a new GitHub pull request. Include the relevant issue number in the description.
 
