@@ -18,7 +18,9 @@ const long interval = 500;
 
 void setup() {
   Serial.begin(115200);
-  while (!Serial) {}
+
+  Serial.print("EMUCAN_LIB_VERSION: ");
+  Serial.println(EMUCAN_LIB_VERSION);
 
   pinMode(PIN_CAN_STANDBY, OUTPUT);
   digitalWrite(PIN_CAN_STANDBY, false); // turn off STANDBY
@@ -27,11 +29,7 @@ void setup() {
 
   if (!CAN.begin(500E3)) {
     Serial.println("CAN.begin(...) failed.");
-    for (;;) {delay(10);}
   }
-
-  Serial.print("EMUCAN_LIB_VERSION: ");
-  Serial.println(EMUCAN_LIB_VERSION);
 
   Serial.println("------- CAN Read ----------");
 }
@@ -42,18 +40,15 @@ void loop() {
 
   int packetSize = CAN.parsePacket();
   if (packetSize) {
-
-    if ( ( ! CAN.packetRtr() )  and CAN.available() ) {
-
+    if ((!CAN.packetRtr()) and CAN.available()) {
       long id = CAN.packetId();
-
       uint8_t receivedData[packetSize];
-      for (int i=0; i<packetSize; i++) {
+      for (int i = 0; i < packetSize; i++) {
         receivedData[i] = CAN.read();
       }
       emucan.checkEMUcan(id, packetSize, receivedData);
     }
-  
+
     // Serial out every second:
     unsigned long currentMillis = millis();
     if (currentMillis - previousMillis >= interval) {
@@ -80,6 +75,5 @@ void loop() {
         Serial.println("WARNING Engine CEL active");
       }
     }
-
   }
 }
