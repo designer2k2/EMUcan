@@ -23,9 +23,9 @@ void setup() {
   Serial.println(EMUCAN_LIB_VERSION);
 
   pinMode(PIN_CAN_STANDBY, OUTPUT);
-  digitalWrite(PIN_CAN_STANDBY, false); // turn off STANDBY
+  digitalWrite(PIN_CAN_STANDBY, false);  // turn off STANDBY
   pinMode(PIN_CAN_BOOSTEN, OUTPUT);
-  digitalWrite(PIN_CAN_BOOSTEN, true); // turn on booster
+  digitalWrite(PIN_CAN_BOOSTEN, true);  // turn on booster
 
   if (!CAN.begin(500E3)) {
     Serial.println("CAN.begin(...) failed.");
