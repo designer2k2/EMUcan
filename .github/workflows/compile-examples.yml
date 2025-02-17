@@ -97,3 +97,29 @@ jobs:
             - source-path: ./
           sketch-paths: |
             - examples/EMucan_UnoR4/EMucan_UnoR4.ino
+
+  compile-sketch-feather_m4_can:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Arduino CLI
+        uses: arduino/setup-arduino-cli@v1
+        with:
+          version: latest
+
+      - name: Configure Arduino board
+        run: |
+          arduino-cli board add arduino:samd:m4
+          arduino-cli board install arduino:samd:m4
+
+      - name: Compile Feather M4 CAN example
+        uses: arduino/compile-sketches@main  
+        with:
+          fqbn: arduino:samd:m4:adafruit_feather_m4_can
+          libraries: |
+            - source-path: ./
+          sketch-paths: |
+            - examples/Your_Feather_M4_CAN_Example/EMUcan_FeatherM4CAN/EMUcan_FeatherM4CAN.ino
+
