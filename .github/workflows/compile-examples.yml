@@ -105,9 +105,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Arduino CLI
-        uses: arduino/setup-arduino-cli@v1
-        with:
-          version: latest
+        uses: arduino/setup-arduino-cli@v2
 
       - name: Configure Arduino board
         run: |
@@ -122,4 +120,3 @@ jobs:
             - source-path: ./
           sketch-paths: |
             - examples/Your_Feather_M4_CAN_Example/EMUcan_FeatherM4CAN/EMUcan_FeatherM4CAN.ino
-
