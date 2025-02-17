@@ -119,4 +119,4 @@ jobs:
           libraries: |
             - source-path: ./
           sketch-paths: |
-            - examples/Your_Feather_M4_CAN_Example/EMUcan_FeatherM4CAN/EMUcan_FeatherM4CAN.ino
+            - examples/EMUcan_FeatherM4CAN/EMUcan_FeatherM4CAN.ino
