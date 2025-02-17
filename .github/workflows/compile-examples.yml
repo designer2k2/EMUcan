@@ -2,8 +2,10 @@
 name: Compile Examples
 
 on:
-  - push
-  - pull_request
+  push:
+    paths-ignore:
+      - "**.md"
+  pull_request:
 permissions: {}
 
 jobs:
@@ -95,3 +97,22 @@ jobs:
             - source-path: ./
           sketch-paths: |
             - examples/EMucan_UnoR4/EMucan_UnoR4.ino
+
+  compile-sketch-feather_m4_can:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Compile Feather M4 example
+        uses: arduino/compile-sketches@main
+        with:
+          platforms: |
+            - name: "adafruit:samd"
+              source-url: https://adafruit.github.io/arduino-board-index/package_adafruit_index.json
+          fqbn: "adafruit:samd:adafruit_feather_m4_can"
+          libraries: |
+            - source-path: ./ 
+            - name: Adafruit CAN
+          sketch-paths: |
+            - examples/EMUcan_FeatherM4CAN/EMUcan_FeatherM4CAN.ino
