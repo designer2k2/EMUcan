@@ -96,9 +96,9 @@ void Send_CAN_Switch_States() {
     //Sends the frame;
     // Queue message for transmission
     if (twai_transmit(&message, pdMS_TO_TICKS(1000)) == ESP_OK) {
-      printf("Message queued for transmission\n");
+      Serial.println("Message queued for transmission");
     } else {
-      printf("Failed to queue message for transmission\n");
+      Serial.println("Failed to queue message for transmission");
     }
   } else {
     Serial.println("Did not send Switch State over CAN due to no communication.");
