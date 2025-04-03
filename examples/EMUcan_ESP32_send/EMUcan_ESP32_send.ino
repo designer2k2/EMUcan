@@ -1,20 +1,20 @@
 // EMUCan Lib Test Example with sending to the EMU
 
-// Example to be run on ESP32
+// Example to be run on ESP32 with CAN Transceiver attached.
 // Configure the EMU Black to send the CAN Stream at 500KBPS
 
-// Attach Button or Switch between BUTTON1_PIN/BUTTON2_PIN and ground.
+// Attach  Switch or Button between SWITCH_1_PIN/SWITCH_2_PIN and ground.
 
 // Configure custom CAN messages in the EMU Black:
 // Use this file: EMUBlackCANStreamExample.canstr
-// It will receive the values as CAN switch 1 and 2
+// It will receive the values as CAN Switch #1 and #2
 
 // https://www.designer2k2.at
 // Stephan Martin 02.04.2025
 
 
-#define BUTTON1_PIN 32
-#define BUTTON2_PIN 33
+#define SWITCH_1_PIN 32
+#define SWITCH_2_PIN 33
 
 #include "EMUcan.h"
 // EMU initialized with base ID 600:
@@ -69,9 +69,9 @@ void setup() {
     return;
   }
 
-  // Define Button inputs with pullup:
-  pinMode(BUTTON1_PIN, INPUT_PULLUP);
-  pinMode(BUTTON2_PIN, INPUT_PULLUP);
+  // Define Switch inputs with pullup:
+  pinMode(SWITCH_1_PIN, INPUT_PULLUP);
+  pinMode(SWITCH_1_PIN, INPUT_PULLUP);
 }
 
 // CAN Bus send Switch States:
@@ -79,8 +79,8 @@ void Send_CAN_Switch_States() {
   if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
     byte CAN_Switch_State = 0;
 
-    bool CAN_Switch_1 = digitalRead(BUTTON1_PIN);
-    bool CAN_Switch_2 = digitalRead(BUTTON2_PIN);
+    bool CAN_Switch_1 = digitalRead(SWITCH_1_PIN);
+    bool CAN_Switch_2 = digitalRead(SWITCH_1_PIN);
 
     bitWrite(CAN_Switch_State, 0, CAN_Switch_1);
     bitWrite(CAN_Switch_State, 1, CAN_Switch_2);
