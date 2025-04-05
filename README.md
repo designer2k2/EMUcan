@@ -23,6 +23,7 @@ This works with any CAN enabled device, MCP2515, Teensy, ESP32, STM32, Arduino U
   - [Status](#status)
   - [Reading the Values](#reading-the-values)
   - [Reading Flags](#reading-flags)
+  - [Sending Data](#sending-data-to-emu-black-via-can-bus)
 - [Others](#others)
   - [Different Versions](#different-versions)
   - [Support](#support)
@@ -237,6 +238,18 @@ if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) {
     Serial.println("No communication from EMU");
 }
 ```
+
+### Sending Data to EMU Black (via CAN Bus)
+
+The following examples demonstrate how to format and send CAN bus messages compatible with the EMU Black ECU, using common hardware platforms. While these examples reside within the EMUcan project repository, they primarily illustrate the correct CAN message structure for sending data *to* the EMU, which may not strictly require the `EMUcan` library itself for the transmission part.
+
+* **Sending Analog Values (Example with MCP2515):**
+    The [EMUcan_MCP2515_send](https://github.com/designer2k2/EMUcan/tree/main/examples/EMUcan_MCP2515_send) sketch shows how to send an analog value (e.g., a sensor reading) using an external MCP2515 CAN controller. It demonstrates the required CAN ID and data formatting.
+
+* **Sending Digital Values (Example with ESP32):**
+    The [EMUcan_ESP32_send](https://github.com/designer2k2/EMUcan/tree/main/examples/EMUcan_ESP32_send) sketch shows how to send a digital value (e.g., a switch state) using the ESP32's built-in CAN controller, again illustrating the necessary CAN message format.
+
+These examples provide a practical guide for constructing and transmitting the CAN messages that the EMU Black expects to receive. You would typically use a standard CAN library appropriate for your hardware (like the ESP32 CAN (TWAI) driver or an MCP2515 library) to perform the actual transmission shown in these examples.
 
 ## Others
 
