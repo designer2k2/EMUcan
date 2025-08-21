@@ -12,10 +12,10 @@ jobs:
 
     steps:
       - name: Checkout this repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Checkout arduino clang format
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: arduino/tooling-project-assets
           path: atpa
