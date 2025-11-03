@@ -25,6 +25,6 @@ jobs:
           cp "./atpa/other/clang-format-configuration/.clang-format" ".clang-format"
           rm -r "./atpa"
       - name: Run clang-format style check
-        uses: jidicula/clang-format-action@v4.15.0
+        uses: jidicula/clang-format-action@v4.16.0
         with:
           clang-format-version: "14"
