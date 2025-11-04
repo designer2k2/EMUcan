@@ -37,4 +37,4 @@ jobs:
           prettier_options: --write
           VALIDATE_CLANG_FORMAT: false
           VALIDATE_CPP: false
-          VALIDATE_GITHUB_ACTIONS: false
+          VALIDATE_GITHUB_ACTIONS_ZIZMOR: false
