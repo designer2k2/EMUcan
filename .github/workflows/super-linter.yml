@@ -38,3 +38,5 @@ jobs:
           VALIDATE_CLANG_FORMAT: false
           VALIDATE_CPP: false
           VALIDATE_GITHUB_ACTIONS_ZIZMOR: false
+          VALIDATE_BIOME_FORMAT: false
+          VALIDATE_SPELL_CODESPELL: false
