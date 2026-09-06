@@ -40,3 +40,4 @@ jobs:
           VALIDATE_GITHUB_ACTIONS_ZIZMOR: false
           VALIDATE_BIOME_FORMAT: false
           VALIDATE_SPELL_CODESPELL: false
+          JSCPD_ARGS: --skip-comments
