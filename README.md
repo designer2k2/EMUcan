@@ -23,6 +23,7 @@ This works with any CAN enabled device, MCP2515, Teensy, ESP32, STM32, Arduino U
   - [Status](#status)
   - [Reading the Values](#reading-the-values)
   - [Reading Flags](#reading-flags)
+  - [User defined CAN stream](#user-defined-can-stream)
   - [Sending Data](#sending-data-to-emu-black-via-can-bus)
 - [Others](#others)
   - [Different Versions](#different-versions)
@@ -225,14 +226,14 @@ Such a channel is mapped onto a float of your own with `addUserChannel`, one cal
 
 ```C++
 // The decoded values live in your own variables:
-float knockIgnCorrection, oilTemp, boost;
+float knockIgnCorrection, fuelTemp, boost;
 
 void setup() {
   // Message 0x60F: Knock ign correction, 16 bits signed little endian, Pos. 0, Mult. 10
   emucan.addUserChannel(0x60F, 0, EMUcan::S16_LE, &knockIgnCorrection, 10);
 
   // Any other channel, on any number of message IDs:
-  emucan.addUserChannel(0x610, 0, EMUcan::U8, &oilTemp, 1, 1, -40);
+  emucan.addUserChannel(0x610, 0, EMUcan::U8, &fuelTemp, 1, 1, -40);
   emucan.addUserChannel(0x610, 2, EMUcan::U16_LE, &boost);
 }
 ```
@@ -254,6 +255,8 @@ The arguments follow the columns of the EMU dialog:
 Up to `EMUCAN_USER_CHANNELS` channels can be mapped, 8 by default, spread over as many message IDs as wanted. Raise it from the build with `-DEMUCAN_USER_CHANNELS=16` if more are needed. `addUserChannel` returns false if the table is full or an argument is out of range, so it is worth checking.
 
 User defined values are deliberately not part of `emu_data`, that struct mirrors the default stream which looks the same on every EMU.
+
+The `EMUcan_MCP2515_UserChannels` example shows the feature in a complete sketch, and the `EMUcan_Simulator` example sends matching frames on 0x60F, so it can be tried out without an ECU on the bus.
 
 ### Status
 

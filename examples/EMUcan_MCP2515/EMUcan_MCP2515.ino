@@ -26,9 +26,6 @@ MCP2515 mcp2515(10);
 unsigned long previousMillis = 0;
 const long interval = 500;
 
-// User defined CAN stream values are stored in own variables:
-float knockIgnCorrection;
-
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
@@ -37,10 +34,6 @@ void setup() {
   Serial.println(EMUCAN_LIB_VERSION);
 
   Serial.println("------- CAN Read ----------");
-
-  // Message 0x60F of the user defined CAN stream carries the knock ign correction,
-  // as 16 bits signed little endian at byte 0 with multiplier 10:
-  emucan.addUserChannel(0x60F, 0, EMUcan::S16_LE, &knockIgnCorrection, 10);
 
   mcp2515.reset();
   mcp2515.setBitrate(CAN_500KBPS, MCP_8MHZ);
@@ -68,9 +61,7 @@ void loop() {
       Serial.print(";");
       Serial.print(emucan.emu_data.MAP);
       Serial.print(";");
-      Serial.print(emucan.emu_data.pulseWidth);
-      Serial.print(";");
-      Serial.println(knockIgnCorrection);
+      Serial.println(emucan.emu_data.pulseWidth);
     } else {
       Serial.println("No communication from EMU");
     }
