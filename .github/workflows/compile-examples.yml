@@ -26,6 +26,7 @@ jobs:
             - examples/EMUcan_MCP2515/EMUcan_MCP2515.ino 
             - examples/EMUcan_MCP2515_send/EMUcan_MCP2515_send.ino
             - examples/EMUcan_Simulator/EMUcan_Simulator.ino
+            - examples/EMUcan_MCP2515_UserChannels/EMUcan_MCP2515_UserChannels.ino
 
   compile-sketch-esp32:
     runs-on: ubuntu-latest

@@ -43,8 +43,9 @@ uint8_t dsgMode[] = { 2, 3, 4, 5, 6, 7, 15 };
 float lambdaTarget[] = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 };
 uint8_t pwm2[] = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90 };
 float fuelUsed[] = { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0 };
-// User defined CAN stream, knock ignition correction in deg:
+// User defined CAN stream, knock ignition correction in deg and fuel temperature in deg C:
 float knockIgnCorrection[] = { 0.0, -1.5, -3.0, -4.5, -6.0, -3.0, -1.5 };
+int8_t fuelTemp[] = { -20, -10, 0, 10, 20, 30, 40, 50, 60 };
 
 void setup() {
   Serial.begin(115200);
@@ -170,12 +171,14 @@ void loop() {
     delay(50);
 
     // User defined CAN stream, base + 0x0F
+    // Received by the EMUcan_MCP2515_UserChannels example:
     // Knock ign correction as 16 bits signed little endian at byte 0, multiplier 10
+    // Fuel temperature as 8 bits unsigned at byte 2, offset -40
     canMsg1.can_id = 0x60F;
     int16_t knock_value = (int16_t)(knockIgnCorrection[i % 7] * 10);
     canMsg1.data[0] = knock_value & 0xFF;
     canMsg1.data[1] = (knock_value >> 8) & 0xFF;
-    canMsg1.data[2] = 0;
+    canMsg1.data[2] = (uint8_t)(fuelTemp[i % 9] + 40);
     canMsg1.data[3] = 0;
     canMsg1.data[4] = 0;
     canMsg1.data[5] = 0;
